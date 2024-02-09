@@ -1,6 +1,9 @@
 import express from "express";
 import cors from "cors";
-import router from './routes/user.routes.js'
+import useRouter from "./routes/user.routes.js";
+import oasGenerator from 'express-oas-generator'
+// import routes from "./utils/swagger.utils.js";
+
 // App
 const app = express();
 
@@ -11,17 +14,24 @@ app.use(
     credentials: true,
   })
 );
-app.use(express.json({
-    limit: "3mb"
-}));
-app.use(express.urlencoded({
+app.use(
+  express.json({
     limit: "3mb",
-    extended: true
-}))
-app.use(express.static("public"))
+  })
+);
+app.use(
+  express.urlencoded({
+    limit: "3mb",
+    extended: true,
+  })
+);
+app.use(express.static("public"));
+
+// Include Swagger setup
+oasGenerator.init(app, {});
 
 // Rotues
-app.use('/api/1/users', router)
+app.use("/api/1/users", useRouter);
 
 // exporting App
 export default app;

@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-
+import dotenv from 'dotenv'
 
 const codeSchema = {
   code: {

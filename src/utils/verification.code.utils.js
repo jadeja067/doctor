@@ -2,7 +2,7 @@ import otpGenerator from "otp-generator";
 import { User } from "../models/user.models.js";
 import send from "./sendMail.utils.js";
 
-const otpExpirationTime = 2 * 1000;
+const otpExpirationTime = 6 * 1000;
 
 const generateNewCode = () =>
   otpGenerator.generate(6, {
@@ -38,8 +38,8 @@ const removeCode = async (code) => {
 const expireCode = async (data) => {
   if (Date.now() - data.createdAt > otpExpirationTime) {
     await removeCode(data.code);
-    return false
-  } else if (data.verified) { 
+    return false;
+  } else if (data.verified) {
     await removeCode(data.code);
     return false;
   }

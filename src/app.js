@@ -21,8 +21,7 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: [`./routes/user.routes.js`],
-  // path to the api routes directory
+  apis: ['./routes/*.js']
 };
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions)
@@ -50,9 +49,8 @@ app.use(express.static("public"));
 // Include Swagger setup
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
-
 // Rotues
-app.use("/api/1/users", userRouter);
+app.use("/api/v1/users", userRouter);
 
 // exporting App
 export default app;

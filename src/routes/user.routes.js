@@ -10,8 +10,8 @@ const userRouter = Router();
 
 /**
  * @swagger
- * /api/sample:
- *   post:
+ * '/api/v1/users/signin':
+ *   get:
  *     summary: Get a list of samples
  *     description: Retrieve a list of sample items.
  *     responses:
@@ -19,7 +19,7 @@ const userRouter = Router();
  *          description: A list of samples.
  */
 userRouter.post("/signin", logIn);
-// userRouter.route("/signup").post(upload.single("uAvatar"), signUpUser);
-// userRouter.route("/verifycode").post(verifyCode);
+userRouter.route("/signup").post(upload.single("uAvatar"), signUpUser);
+userRouter.route("/verifycode").post(verifyCode);
 
 export default userRouter;

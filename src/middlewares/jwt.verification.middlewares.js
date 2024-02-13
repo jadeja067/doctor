@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { asyncHandler } from "../utils/asyncHandler.utils.js";
+import asyncHandler from "../utils/asyncHandler.utils.js";
 import ApiError from "../utils/ApiError.utils.js";
 import dotenv from "dotenv";
 import { User } from "../models/user.models.js";
@@ -13,9 +13,9 @@ const verifyJwt = asyncHandler(async (req, res, next) => {
   const user = await User.findById(decodedToken?._id).select(
     "-uPassword -createdAt -updatedAt -uCode"
   );
-    if (user) throw new ApiError(401, "Invalid AccessToken.");
-    req.user = user
-    next()
+  if (!user) throw new ApiError(401, "Invalid AccessToken.");
+  req.user = user;
+  next();
 });
 
 export default verifyJwt;

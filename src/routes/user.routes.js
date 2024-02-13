@@ -18,7 +18,7 @@ const userRouter = Router();
  *        200:
  *          description: A list of samples.
  */
-userRouter.post("/signin", logIn);
+userRouter.route("/signin").post(logIn);
 userRouter.route("/signup").post(upload.single("uAvatar"), signUpUser);
 userRouter.route("/verifycode").post(verifyCode);
 

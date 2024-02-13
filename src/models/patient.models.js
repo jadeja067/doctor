@@ -58,9 +58,15 @@ const patientSchema = new Schema(
     },
     pAge: {
       type: Number,
+      min: [0, "Age must be positive number"],
       max: [110, "Age must be less or equal to 120"],
       required: [true, "Patient age is required."],
     },
+    uId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "User ID is required."]
+    }
   },
   {
     timestamps: true,

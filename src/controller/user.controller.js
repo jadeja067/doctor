@@ -68,11 +68,11 @@ const verifyCode = asyncHandler(async (req, res) => {
     createdAt: isVerifiedUser.uCode?.createdAt,
   });
   if (checkingCodeExpiration) {
-    // await expireCode({
-    //   code,
-    //   createdAt: isVerifiedUser.uCode?.createdAt,
-    //   verified: true,
-    // });
+    await expireCode({
+      code,
+      createdAt: isVerifiedUser.uCode?.createdAt,
+      verified: true,
+    });
     const authToken = await isVerifiedUser.generateAccessToken();
     res.status(200).json(
       new ApiResponse(

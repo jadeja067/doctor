@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import useRouter from "./routes/user.routes.js";
-import oasGenerator from 'express-oas-generator'
+// import oasGenerator from 'express-oas-generator'
 // import routes from "./utils/swagger.utils.js";
 
 // App
@@ -28,7 +28,7 @@ app.use(
 app.use(express.static("public"));
 
 // Include Swagger setup
-oasGenerator.init(app, {});
+// oasGenerator.init(app, {});
 
 // Rotues
 app.use("/api/1/users", useRouter);

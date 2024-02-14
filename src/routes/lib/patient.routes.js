@@ -24,7 +24,7 @@ const patientRouter = Router();
  *     description: Retrieve a list of all patients associated with the authenticated user
  *     tags: [Patient]
  *     security:
- *       - bearerAuth: ['eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWNjN2IwM2U5NGNlNDBiN2I4OTQwMTUiLCJzRW1haWwiOiJrYW5pc2hrZ3VwdGEuZGV2bW9ua0BnbWFpbC5jb20iLCJpYXQiOjE3MDc5MDAwMDksImV4cCI6MTcwODc2NDAwOX0.eap6HV_5cpItBQFHaWveRZn_OLhteO08NmyUFx33WLg']
+ *       - bearerAuth: []
  *     responses:
  *       '200':
  *         description: A list of patients
@@ -36,12 +36,14 @@ const patientRouter = Router();
  *                 -$ref: '../src/models/lib/patient.model.js/Patient'
  *       '401':
  *         description: Unauthorized request
+ * 
+ *   
  */
 patientRouter.get("/", verifyJwt, getAllPatients);
 
 /**
  * @swagger
- * api/v1/patients/{id}:
+ * /api/v1/patients/{id}:
  *   get:
  *     summary: Get patient by ID
  *     description: Retrieve patient details by ID associated with the authenticated user
@@ -71,7 +73,7 @@ patientRouter.get("/:id", verifyJwt, getPatient);
 
 /**
  * @swagger
- * /patients/new:
+ * /api/v1/patients/new:
  *   post:
  *     summary: Create a new patient
  *     description: Create a new patient associated with the authenticated user
@@ -100,7 +102,7 @@ patientRouter.post("/new", verifyJwt, createNewPatient);
 
 /**
  * @swagger
- * /patients/update/{id}:
+ * /api/v1/patients/update/{id}:
  *   patch:
  *     summary: Update patient by ID
  *     description: Update patient details by ID associated with the authenticated user

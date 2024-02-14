@@ -29,9 +29,9 @@ const userRouter = Router();
  *           schema:
  *             type: object
  *             properties:
- *               uEmail:
+ *               sEmail:
  *                 type: string
- *               uPassword:
+ *               sPassword:
  *                 type: string
  *     responses:
  *       '200':
@@ -86,7 +86,7 @@ userRouter.route("/signin").post(logIn);
  *       '400':
  *         description: Bad request
  */
-userRouter.route("/signup").post(upload.single("uAvatar"), signUpUser);
+userRouter.route("/signup").post(upload.single("sAvatar"), signUpUser);
 
 /**
  * @swagger
@@ -102,7 +102,7 @@ userRouter.route("/signup").post(upload.single("uAvatar"), signUpUser);
  *           schema:
  *             type: object
  *             properties:
- *               code:
+ *               nCode:
  *                 type: integer
  *     responses:
  *       '200':

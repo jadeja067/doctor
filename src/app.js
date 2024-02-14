@@ -14,10 +14,9 @@ const swaggerOptions = {
       version: "1.0.0",
       description:
         "This is the Appointment Booking App that is used by doctor to manage their appointments. A user can signup/login to the app and then manage their appointments. They can add new patients and update the patient details. They can create new appointments as well for a patient. ",
-    }
-  },
+    },
   components:{
-      schema:{
+       schema:{
         Patient:{
           $ref: './src/models/lib/patient.model.js#/definitions/Patient',
         },
@@ -25,9 +24,23 @@ const swaggerOptions = {
           $ref: './src/models/lib/user.model.js#/definitions/User',
         },
       },
+      securitySchemes:{
+        bearerAuth:{
+          type: 'http',
+          scheme:'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+      security:[
+        {
+          bearerAuth:[],
+        }
+      ],
+    },
   },
   apis: ["./src/routes/lib/*.js","./src/*.js"]
-};
+
+}
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions)
 

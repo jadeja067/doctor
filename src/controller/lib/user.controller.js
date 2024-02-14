@@ -66,7 +66,7 @@ const verifyCode = asyncHandler(async (req, res) => {
   const isVerifiedUser = await User.findOne({ "oCode.nCode": code }).select(
     "-sPassword"
   );
-  const checkingCodeExpiration = await expireCode({
+    const checkingCodeExpiration = await expireCode({
     code,
     createdAt: isVerifiedUser?.oCode?.nCreatedAt,
   });
@@ -76,7 +76,7 @@ const verifyCode = asyncHandler(async (req, res) => {
       createdAt: isVerifiedUser?.oCode?.nCreatedAt,
       verified: true,
     });
-    const authToken = await isVerifiedUser.generateAccessToken();
+        const authToken = await isVerifiedUser.generateAccessToken();
     res.status(200).json(
       new ApiResponse(
         200,

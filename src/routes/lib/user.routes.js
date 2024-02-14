@@ -3,8 +3,8 @@ import {
   logIn,
   signUpUser,
   verifyCode,
-} from "../controller/user.controller.js";
-import { upload } from "../middlewares/multer.middleware.js";
+} from "../../controller/index.js";
+import { upload } from "../../middlewares/index.js";
 
 const userRouter = Router();
 
@@ -19,7 +19,7 @@ const userRouter = Router();
  *          description: A list of samples.
  */
 userRouter.route("/signin").post(logIn);
-userRouter.route("/signup").post(upload.single("uAvatar"), signUpUser);
-userRouter.route("/verifycode").post(verifyCode);
+// userRouter.route("/signup").post(upload.single("uAvatar"), signUpUser);
+// userRouter.route("/verifycode").post(verifyCode);
 
 export default userRouter;

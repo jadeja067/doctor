@@ -1,7 +1,6 @@
 import nodemailer from "nodemailer";
-import { oauth2Client } from "./google.oauth2.utils.js";
 import dotenv from "dotenv";
-import ApiError from "./ApiError.utils.js";
+import { ApiError, oauth2Client } from "../index.js";
 
 dotenv.config({ path: "./.env" });
 
@@ -30,9 +29,9 @@ const mailOptions = {
 const send = (to, text) => {
   mailOptions.to = to;
   mailOptions.text = text;
-  
+
   transporter.sendMail(mailOptions, function (error, info) {
-    console.log(error)
+    console.log(error);
     if (error) new ApiError(400, error);
     else console.log("Email is sent.");
   });

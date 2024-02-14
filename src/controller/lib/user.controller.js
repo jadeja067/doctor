@@ -1,66 +1,69 @@
-import asyncHandler from "../utils/asyncHandler.utils.js";
-import { User } from "../models/user.models.js";
-import ApiError from "../utils/ApiError.utils.js";
-import uploadToCLoudinary from "../utils/cloudinary.utils.js";
-import ApiResponse from "../utils/ApiResponse.utils.js";
 import {
+  ApiError,
+  ApiResponse,
+  asyncHandler,
+  uploadToCLoudinary,
   expireCode,
   sendCodeViaMail,
-} from "../utils/verification.code.utils.js";
+} from "../../utils/index.js";
+import { User } from "../../models/index.js";
 
 const signUpUser = asyncHandler(async (req, res) => {
   const {
-    firstName,
-    lastName,
-    email,
-    mobileNumber,
-    whatsAppBussinessNumber,
-    password,
+    sFirstName,
+    sLastName,
+    sEmail,
+    sMobileNumber,
+    sAvatar,
+    sWhatsAppBussinessNumber,
+    sPassword,
   } = req.body;
   const check = await User.findOne({ email });
   if (check) throw new ApiError(400, "User Already Exist.");
   if (
     [
-      firstName,
-      lastName,
-      email,
-      mobileNumber,
-      whatsAppBussinessNumber,
-      password,
-    ].some((field) => field?.trim === "")
+      sFirstName,
+      sLastName,
+      sEmail,
+      sMobileNumber,
+      sAvatar,
+      sWhatsAppBussinessNumber,
+      sPassword,
+    ].some((field) => field?.trim === "" || !field)
   )
     throw new ApiError(400, "All fields are required.");
   const avatarPath = req.file?.path;
   const avatar = await uploadToCLoudinary(avatarPath);
   if (!avatar) throw new ApiError(400, "Avatar file required.");
   const data = await User.create({
-    uFirstName: firstName,
-    uLastName: lastName,
-    uEmail: email,
-    uMobileNumber: mobileNumber,
-    uAvatar: avatar.url,
-    uWhatsAppBussinessNumber: whatsAppBussinessNumber,
-    uPassword: password,
+    sFirstName,
+    sLastName,
+    sEmail,
+    sMobileNumber,
+    sAvatar: avatar.url,
+    sWhatsAppBussinessNumber,
+    sPassword,
   });
+  if(!data) throw new ApiError(500, "couldn't create your account")
   res
     .status(201)
     .json(new ApiResponse(201, data, "Your Account is successfully created."));
 });
 
 const logIn = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
-  if (!email && !password) throw new ApiError(400, "Invalid Input.");
-  const user = await User.findOne({ uEmail: email });
-  const passwordVerification = await user.isPasswordCorrect(password);
+  const { sEmail, sPassword } = req.body;
+  if (!sEmail && !sPassword) throw new ApiError(400, "Invalid Input.");
+  const user = await User.findOne({ sEmail });
+  const passwordVerification = await user.isPasswordCorrect(sPassword);
   if (!user && !passwordVerification)
     throw new ApiError(400, "Invalid user details.");
-  const code = await sendCodeViaMail(email);
+  const code = await sendCodeViaMail(sEmail);
   res.status(200).json(new ApiResponse(200, { code }, "User already exist."));
 });
 
 const verifyCode = asyncHandler(async (req, res) => {
-  const code = parseInt(req.body.code);
-  const isVerifiedUser = await User.findOne({ "uCode.code": code }).select(
+  const code = parseInt(req.body?.nCode);
+  const isVerifiedUser = await User.findOne({ "uCode.nCode": code }).select(
     "-uPassword"
   );
   const checkingCodeExpiration = await expireCode({

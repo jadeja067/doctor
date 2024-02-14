@@ -1,38 +1,36 @@
 import mongoose, { Schema } from "mongoose";
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import dotenv from 'dotenv'
 
 const codeSchema = {
-  code: {
+  nCode: {
     type: Number,
   },
-  createdAt: {
+  nCreatedAt: {
     type: Number,
   },
 }
 
-
 const userSchema = new Schema(
   {
-    uAvatar: {
+    sAvatar: {
       type: String,
       trim: true,
-      required: [true, "Avatar is Required."],
+      required: [true, "Avatar is required."],
     },
-    uFirstName: {
+    sFirstName: {
       type: String,
       trim: true,
       minlength: [3, "First name length should be greater than 2 character"],
-      required: [true, "Frist name is Required."],
+      required: [true, "Frist name is required."],
     },
-    uLastName: {
+    sLastName: {
       type: String,
       trim: true,
       minlength: [3, "Last name length should be greater than 2 character"],
-      required: [true, "Last name is Required."],
+      required: [true, "Last name is required."],
     },
-    uEmail: {
+    sEmail: {
       type: String,
       trim: true,
       format: "email",
@@ -40,16 +38,16 @@ const userSchema = new Schema(
         /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/,
         "Please fill a valid email address",
       ],
-      required: [true, "Email address is Required."],
+      required: [true, "Email address is required."],
       unique: [true, "User with this Email address already exist."],
     },
-    uPassword: {
+    sPassword: {
       type: String,
-      required: [true, "Password is Required."],
+      required: [true, "Password is required."],
       minlength: [8, "Password length must be atleast 8 character"],
       maxlength: [20, "Password length must not be greater than 20 character"],
     },
-    uMobileNumber: {
+    sMobileNumber: {
       type: String,
       minlength: [
         13,
@@ -59,13 +57,13 @@ const userSchema = new Schema(
         16,
         "Mobile number length should be less than 17 character including + sign",
       ],
-      required: [true, "Mobile number is Required."],
+      required: [true, "Mobile number is required."],
       match: [
         /^\+(?:[0-9] ?){6,14}[0-9]$/,
         "Please fill a valid mobile number with country code",
       ],
     },
-    uWhatsAppBussinessNumber: {
+    sWhatsAppBussinessNumber: {
       type: String,
       minlength: [
         13,
@@ -75,14 +73,14 @@ const userSchema = new Schema(
         16,
         "WhatsApp number length should be less than 17 character including + sign",
       ],
-      required: [true, "Mobile number is Required."],
+      required: [true, "Mobile number is required."],
       match: [
         /^\+(?:[0-9] ?){6,14}[0-9]$/,
         "Please fill a valid mobile number with country code",
       ],
-      required: [true, "WhatsApp bussiness Number is Required."],
+      required: [true, "WhatsApp bussiness Number is required."],
     },
-    uCode: codeSchema,
+    oCode: codeSchema,
   },
   {
     timestamps: true,
@@ -90,19 +88,19 @@ const userSchema = new Schema(
 );
 
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("uPassword")) next();
-  this.uPassword = await bcryptjs.hash(this.uPassword, 10);
+  if (!this.isModified("sPassword")) next();
+  this.sPassword = await bcryptjs.hash(this.sPassword, 10);
   next();
 });
 
 userSchema.methods.isPasswordCorrect = async function (password) {
-  return await bcryptjs.compare(password, this.uPassword);
+  return await bcryptjs.compare(password, this.sPassword);
 };
 userSchema.methods.generateAccessToken = function () {
   return jwt.sign(
     {
       _id: this._id,
-      uEmail: this.uEmail,
+      sEmail: this.sEmail,
     },
     process.env.JWT_SECRET_KEY,
     {

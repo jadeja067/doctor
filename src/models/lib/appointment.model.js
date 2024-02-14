@@ -1,17 +1,17 @@
 import mongoose, { Schema } from "mongoose";
 
 const repeatSchema = new Schema({
-    aFrequency: {
+    sFrequency: {
         type: String,
         require: [true, "Appointment repeat frequency is required."],
         enum: ["Never", "Daily", "Weekly", "Monthly", "Yearly"],
         default: "Never"
     },
-    aEvery:{
+    nEvery:{
         type: Number,
         min: [1, "Appointment Every duration shouldn't be less than 1."]
     },
-    aRepeatDuration:{
+    sRepeatDuration:{
         type: [String]
     }
 })
@@ -22,35 +22,35 @@ const appointmentSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Patient"
     },
-    aToTreat: {
+    sToTreat: {
       type: String,
       trim: true,
-      required: [true, "Treatment place is Required."],
+      required: [true, "Treatment place is required."],
       enum: ["Home Visit", "Clinic"],
       default: "Home Visit",
     },
-    aFromDate: {
-      type: String,
+    dFromDate: {
+      type: Date,
       trim: true,
-      required: [true, "Appointment start date is Required."],
+      required: [true, "Appointment start date is required."],
     },
-    aToDate: {
-      type: String,
+    dToDate: {
+      type: Date,
       trim: true,
-      required: [true, "Appointment end date is Required."],
+      required: [true, "Appointment end date is required."],
     },
-    aFromTime: {
-      type: String,
+    dtFromTime: {
+      type: Date,
       trim: true,
-      required: [true, "Appointment start time is Required."],
+      required: [true, "Appointment start time is required."],
     },
-    aToTime: {
-      type: String,
+    dtToTime: {
+      type: Date,
       trim: true,
-      required: [true, "Appointment end time is Required."],
+      required: [true, "Appointment end time is required."],
     },
-    aRepeat: repeatSchema,
-    aNote:{
+    oRepeat: repeatSchema,
+    sNote:{
         type: String,
         trim: true,
     }

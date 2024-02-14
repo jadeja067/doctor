@@ -1,6 +1,11 @@
 import { Router } from "express";
-import { createNewPatient, getAllPatients, getPatient, updatePatient } from "../controller/patient.controller.js";
-import verifyJwt from "../middlewares/jwt.verification.middlewares.js"; 
+import {
+  createNewPatient,
+  getAllPatients,
+  getPatient,
+  updatePatient,
+} from "../../controller/index.js";
+import { verifyJwt } from "../../middlewares/index.js";
 
 const patientRouter = Router();
 

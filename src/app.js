@@ -2,8 +2,7 @@ import express from "express";
 import cors from "cors";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from 'swagger-ui-express'
-import userRouter from "./routes/user.routes.js";
-import patientRouter from "./routes/patient.routes.js";
+import {userRouter, patientRouter} from "./routes/index.js";
 // App
 const app = express();
 const swaggerOptions = {
@@ -16,7 +15,7 @@ const swaggerOptions = {
         "A sample API to demonstrate swagger integration with node.js",
     }
   },
-  apis: ["./*.js"],
+  apis: ["./src/routes/lib/*.js"],
 };
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions)

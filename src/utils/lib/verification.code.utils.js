@@ -1,6 +1,6 @@
 import otpGenerator from "otp-generator";
-import { User } from "../models/user.models.js";
-import send from "./sendMail.utils.js";
+import { User } from "../../models/index.js";
+import {send} from "../index.js";
 
 const otpExpirationTime = 10 * 60 * 1000;
 
@@ -30,8 +30,8 @@ const sendCodeViaMail = async (email) => {
 
 const removeCode = async (code) => {
   await User.findOneAndUpdate(
-    { "uCode.code": code },
-    { "uCode.code": 0, "uCode.createdAt": 0 }
+    { "uCode.nCode": code },
+    { "uCode.nCode": 0, "uCode.nCreatedAt": 0 }
   )
 };
 

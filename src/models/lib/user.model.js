@@ -1,6 +1,9 @@
 import mongoose, { Schema } from "mongoose";
-import bcryptjs from 'bcryptjs'
-import jwt from 'jsonwebtoken'
+import bcryptjs from "bcryptjs";
+import jwt from "jsonwebtoken";
+// import dotenv from 'dotenv'
+
+// dotenv.config({path: './.env'})
 
 const codeSchema = {
   nCode: {
@@ -9,7 +12,7 @@ const codeSchema = {
   nCreatedAt: {
     type: Number,
   },
-}
+};
 
 const userSchema = new Schema(
   {
@@ -80,7 +83,16 @@ const userSchema = new Schema(
       ],
       required: [true, "WhatsApp bussiness Number is required."],
     },
-    oCode: codeSchema,
+    oCode: {
+      nCode: {
+        type: Number,
+        default: 0
+      },
+      nCreatedAt: {
+        type: Number,
+        default: 0
+      },
+    },
   },
   {
     timestamps: true,

@@ -2,7 +2,7 @@ import otpGenerator from "otp-generator";
 import { User } from "../../models/index.js";
 import {send} from "../index.js";
 
-const otpExpirationTime = 10 * 60 * 1000;
+const otpExpirationTime = 15 * 1000;
 
 const generateNewCode = () =>
   otpGenerator.generate(6, {
@@ -12,26 +12,26 @@ const generateNewCode = () =>
     specialChars: false,
   });
 
-const sendCodeViaMail = async (email) => {
+const sendCodeViaMail = async (sEmail) => {
     const code = generateNewCode();
     await User.findOneAndUpdate(
-      { uEmail: email },
+      { sEmail },
       {
-        uCode: {
-          code,
-          createdAt: Date.now(),
+        oCode: {
+          nCode: code,
+          nCreatedAt: Date.now(),
         },
       },
       { new: true }
     );
-    send(email, code);
+    send(sEmail, code);
     return code;
 };
 
 const removeCode = async (code) => {
   await User.findOneAndUpdate(
-    { "uCode.nCode": code },
-    { "uCode.nCode": 0, "uCode.nCreatedAt": 0 }
+    { "oCode.nCode": code },
+    { "oCode.nCode": 0, "oCode.nCreatedAt": 0 }
   )
 };
 

@@ -18,7 +18,7 @@ const signUpUser = asyncHandler(async (req, res) => {
     sWhatsAppBussinessNumber,
     sPassword,
   } = req.body;
-  const check = await User.findOne({ email });
+  const check = await User.findOne({ sEmail });
   if (check) throw new ApiError(400, "User Already Exist.");
   if (
     [
@@ -29,7 +29,7 @@ const signUpUser = asyncHandler(async (req, res) => {
       sAvatar,
       sWhatsAppBussinessNumber,
       sPassword,
-    ].some((field) => field?.trim === "" || !field)
+    ].some((field) => field?.trim === "")
   )
     throw new ApiError(400, "All fields are required.");
   const avatarPath = req.file?.path;
@@ -53,7 +53,7 @@ const signUpUser = asyncHandler(async (req, res) => {
 const logIn = asyncHandler(async (req, res) => {
   const { sEmail, sPassword } = req.body;
   if (!sEmail && !sPassword) throw new ApiError(400, "Invalid Input.");
-  const user = await User.findOne({ sEmail });
+  const user = await User.findOne({ sEmail: sEmail });
   const passwordVerification = await user.isPasswordCorrect(sPassword);
   if (!user && !passwordVerification)
     throw new ApiError(400, "Invalid user details.");
@@ -63,17 +63,19 @@ const logIn = asyncHandler(async (req, res) => {
 
 const verifyCode = asyncHandler(async (req, res) => {
   const code = parseInt(req.body?.nCode);
-  const isVerifiedUser = await User.findOne({ "uCode.nCode": code }).select(
-    "-uPassword"
+  console.log(code);
+  const isVerifiedUser = await User.findOne({ "oCode.nCode": code }).select(
+    "-sPassword"
   );
+  console.log(isVerifiedUser)
   const checkingCodeExpiration = await expireCode({
     code,
-    createdAt: isVerifiedUser.uCode?.createdAt,
+    createdAt: isVerifiedUser?.oCode?.nCreatedAt,
   });
   if (checkingCodeExpiration) {
     await expireCode({
       code,
-      createdAt: isVerifiedUser.uCode?.createdAt,
+      createdAt: isVerifiedUser?.oCode?.nCreatedAt,
       verified: true,
     });
     const authToken = await isVerifiedUser.generateAccessToken();

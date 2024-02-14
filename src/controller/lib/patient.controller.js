@@ -3,46 +3,45 @@ import { Patient } from "../../models/index.js";
 
 const createNewPatient = asyncHandler(async (req, res) => {
   const {
-    name,
-    type,
-    assessment,
-    primaryAddress,
-    secondaryAddress,
-    gender,
-    whatsAppNumber,
-    age,
+    sName,
+    sType,
+    sAssessment,
+    sAddress,
+    sAddress2,
+    sWhatsAppNumber,
+    sGender,
+    nAge,
   } = req.body;
   const uId = req.user?._id;
-  console.log(uId);
   const check = await Patient.findOne({
-    pName: name,
-    pWhatsAppNumber: whatsAppNumber,
+    sName,
+    sWhatsAppNumber
   });
   if (check) throw new ApiError(400, "User Already Exist.");
   if (
     [
-      name,
-      type,
-      assessment,
-      primaryAddress,
-      secondaryAddress,
-      gender,
-      whatsAppNumber,
-      age,
+      sName,
+      sType,
+      sAssessment,
+      sAddress,
+      sAddress2,
+      sWhatsAppNumber,
+      sGender,
+      nAge,
       uId,
     ].some((field) => field?.trim === "")
   )
     throw new ApiError(400, "All fields are required.");
   const data = await Patient.create({
-    pName: name,
-    pType: type,
-    pAssessment: assessment,
-    pAddress: primaryAddress,
-    pAddress2: secondaryAddress,
-    pWhatsAppNumber: whatsAppNumber,
-    pGender: gender,
-    pAge: age,
-    uId: uId,
+    sName,
+    sType,
+    sAssessment,
+    sAddress,
+    sAddress2,
+    sWhatsAppNumber,
+    sGender,
+    nAge,
+    uId,
   });
   res
     .status(201)
@@ -58,9 +57,8 @@ const getAllPatients = asyncHandler(async (req, res) => {
 });
 
 const getPatient = asyncHandler(async (req, res) => {
-  const uId = req.user?._id,
-    _id = req.params?.id;
-  const patient = await Patient.find({ _id, uId });
+  const _id = req.params?.id;
+  const patient = await Patient.find({ _id });
   if (!patient) throw new ApiResponse(404, "can't find this patient details.");
   res.status(200).json(new ApiResponse(200, patient));
 });
@@ -68,39 +66,39 @@ const getPatient = asyncHandler(async (req, res) => {
 const updatePatient = asyncHandler(async (req, res) => {
   const _id = req.params?.id;
   const {
-    name,
-    type,
-    assessment,
-    primaryAddress,
-    secondaryAddress,
-    gender,
-    whatsAppNumber,
-    age,
+    sName,
+    sType,
+    sAssessment,
+    sAddress,
+    sAddress2,
+    sWhatsAppNumber,
+    sGender,
+    nAge,
   } = req.body;
   if (
     [
-      name,
-      type,
-      assessment,
-      primaryAddress,
-      secondaryAddress,
-      gender,
-      whatsAppNumber,
-      age,
+      sName,
+      sType,
+      sAssessment,
+      sAddress,
+      sAddress2,
+      sWhatsAppNumber,
+      sGender,
+      nAge,
     ].some((field) => field?.trim === "")
   )
     throw new ApiError(400, "All fields are required.");
   const updatedPatient = await Patient.findOneAndUpdate(
     { _id },
     {
-      pName: name,
-      pType: type,
-      pAssessment: assessment,
-      pAddress: primaryAddress,
-      pAddress2: secondaryAddress,
-      pWhatsAppNumber: whatsAppNumber,
-      pGender: gender,
-      pAge: age,
+      sName,
+      sType,
+      sAssessment,
+      sAddress,
+      sAddress2,
+      sWhatsAppNumber,
+      sGender,
+      nAge,
     },
     {
       new: true,

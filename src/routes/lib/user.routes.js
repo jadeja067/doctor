@@ -48,7 +48,7 @@ userRouter.route("/signin").post(logIn);
 
 /**
  * @swagger
- * /signup: 
+ * /api/v1/users/signup: 
  *   post:
  *     summary: Create a new user
  *     description: Endpoint to sign up a new user
@@ -90,7 +90,7 @@ userRouter.route("/signup").post(upload.single("uAvatar"), signUpUser);
 
 /**
  * @swagger
- * /verifycode:
+ * /api/v1/users/verifycode:
  *   post:
  *     summary: Verify user code
  *     description: Endpoint to verify user code

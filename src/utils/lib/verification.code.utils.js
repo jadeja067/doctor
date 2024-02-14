@@ -31,8 +31,14 @@ const sendCodeViaMail = async (sEmail) => {
 const removeCode = async (code) => {
   await User.findOneAndUpdate(
     { "oCode.nCode": code },
-    { "oCode.nCode": 0, "oCode.nCreatedAt": 0 }
-  )
+    {
+      oCode: {
+        nCode: 0,
+        nCreatedAt: 0,
+      },
+    },
+    { new: true }
+  );
 };
 
 const expireCode = async (data) => {

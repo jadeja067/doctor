@@ -63,11 +63,9 @@ const logIn = asyncHandler(async (req, res) => {
 
 const verifyCode = asyncHandler(async (req, res) => {
   const code = parseInt(req.body?.nCode);
-  console.log(code);
   const isVerifiedUser = await User.findOne({ "oCode.nCode": code }).select(
     "-sPassword"
   );
-  console.log(isVerifiedUser)
   const checkingCodeExpiration = await expireCode({
     code,
     createdAt: isVerifiedUser?.oCode?.nCreatedAt,

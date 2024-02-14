@@ -18,13 +18,13 @@ const patientRouter = Router();
 
 /**
  * @swagger
- * /patients:
+ * /api/v1/patients:
  *   get:
  *     summary: Get all patients
  *     description: Retrieve a list of all patients associated with the authenticated user
  *     tags: [Patient]
  *     security:
- *       - bearerAuth: []
+ *       - bearerAuth: ['eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWNjN2IwM2U5NGNlNDBiN2I4OTQwMTUiLCJzRW1haWwiOiJrYW5pc2hrZ3VwdGEuZGV2bW9ua0BnbWFpbC5jb20iLCJpYXQiOjE3MDc5MDAwMDksImV4cCI6MTcwODc2NDAwOX0.eap6HV_5cpItBQFHaWveRZn_OLhteO08NmyUFx33WLg']
  *     responses:
  *       '200':
  *         description: A list of patients
@@ -41,7 +41,7 @@ patientRouter.get("/", verifyJwt, getAllPatients);
 
 /**
  * @swagger
- * /patients/{id}:
+ * api/v1/patients/{id}:
  *   get:
  *     summary: Get patient by ID
  *     description: Retrieve patient details by ID associated with the authenticated user

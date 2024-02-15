@@ -25,7 +25,6 @@ const signUpUser = asyncHandler(async (req, res) => {
       sLastName,
       sEmail,
       sMobileNumber,
-      sAvatar,
       sWhatsAppBussinessNumber,
       sPassword,
     ].some((field) => field?.trim === "")

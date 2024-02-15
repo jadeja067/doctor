@@ -14,7 +14,6 @@ const signUpUser = asyncHandler(async (req, res) => {
     sLastName,
     sEmail,
     sMobileNumber,
-    sAvatar,
     sWhatsAppBussinessNumber,
     sPassword,
   } = req.body;
@@ -54,9 +53,11 @@ const logIn = asyncHandler(async (req, res) => {
   const { sEmail, sPassword } = req.body;
   if (!sEmail && !sPassword) throw new ApiError(400, "Invalid Input.");
   const user = await User.findOne({ sEmail: sEmail });
+  if (!user)
+    throw new ApiError(400, "User with this email doesn't exist.");
   const passwordVerification = await user.isPasswordCorrect(sPassword);
-  if (!user && !passwordVerification)
-    throw new ApiError(400, "Invalid user details.");
+  if (!passwordVerification)
+    throw new ApiError(400, "invalid password.");
   const code = await sendCodeViaMail(sEmail);
   res.status(200).json(new ApiResponse(200, { code }, "User already exist."));
 });

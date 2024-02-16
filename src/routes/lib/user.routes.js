@@ -1,9 +1,5 @@
 import { Router } from "express";
-import {
-  logIn,
-  signUpUser,
-  verifyCode,
-} from "../../controller/index.js";
+import { logIn, signUpUser, verifyCode } from "../../controller/index.js";
 import { upload } from "../../middlewares/index.js";
 
 const userRouter = Router();
@@ -27,20 +23,34 @@ const userRouter = Router();
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               sEmail:
- *                 type: string
- *               sPassword:
- *                 type: string
+ *            type: object
+ *            properties:
+ *              sEmail:
+ *                type: string
+ *                example: abcd@gmail.com
+ *              sPassword:
+ *                type: string
+ *                example: 123456789
  *     responses:
  *       '200':
  *         description: User logged in successfully
  *         content:
  *           application/json:
  *             schema:
- *               items:
- *                 -$ref: '../src/models/lib/user.model.js/User'
+ *              type: object
+ *              properties:
+ *                statusCode:
+ *                  type: integer
+ *                  example: 200
+ *                code:
+ *                  type: object
+ *                  properties:
+ *                    nCode:
+ *                      type: string
+ *                      example: 123456
+ *                message:
+ *                  type: string
+ *                  example: "ok"
  *       '400':
  *         description: Invalid input
  */
@@ -48,7 +58,7 @@ userRouter.route("/signin").post(logIn);
 
 /**
  * @swagger
- * /api/v1/users/signup: 
+ * /api/v1/users/signup:
  *   post:
  *     summary: Create a new user
  *     description: Endpoint to sign up a new user
@@ -81,8 +91,48 @@ userRouter.route("/signin").post(logIn);
  *         content:
  *           application/json:
  *             schema:
- *               -$ref: '../src/models/lib/user.model.js/User'
- *          
+ *               type: object
+ *               properties: 
+ *                statusCode:
+ *                  type: integer
+ *                data:
+ *                  type: object
+ *                  properties:
+ *                    sAvatar:
+ *                      type: string 
+ *                    sFirstName: 
+ *                      type: string
+ *                    sLastName: 
+ *                      type: string
+ *                    sEmail: 
+ *                      type: string
+ *                    sPassword: 
+ *                      type: string
+ *                    sMobileNumber: 
+ *                      type: string
+ *                    sWhatsAppBussinessNumber: 
+ *                      type: string
+ *                    oCode: 
+ *                      type: object
+ *                      properties:
+ *                        nCode: 
+ *                          type: integer
+ *                          format: int64
+ *                        nCreatedAt: 
+ *                          type: integer
+ *                          format: int64
+ *                    _id: 
+ *                      type: string
+ *                    createdAt: 
+ *                      type: string
+ *                    updatedAt: 
+ *                      type: string
+ *                    __v: 
+ *                      type: string
+ *                message:
+ *                    type: string
+ *                success:
+ *                    type: string
  *       '400':
  *         description: Bad request
  */
@@ -107,8 +157,56 @@ userRouter.route("/signup").post(upload.single("sAvatar"), signUpUser);
  *     responses:
  *       '200':
  *         description: User code verified successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *              type: object
+ *              properties:
+ *                statusCode:
+ *                  type: integer
+ *                  format: int64
+ *                data:
+ *                  type: object
+ *                  properties: 
+ *                    User:
+ *                      type: object
+ *                      properties:
+ *                        id: 
+ *                          type: string
+ *                        sAvatar:
+ *                          type: string
+ *                        sFirstName: 
+ *                          type: string
+ *                        sLastName: 
+ *                          type: string
+ *                        sEmail: 
+ *                          type: string
+ *                        sMobileNumber: 
+ *                          type: string
+ *                        sWhatsAppBussinessNumber: 
+ *                          type: string
+ *                        createdAt: 
+ *                          type: string
+ *                          format: date-time
+ *                        updatedAt: 
+ *                          type: string
+ *                          format: date-time
+ *                    AccessToken: 
+ *                      type: string 
+ *                message: 
+ *                  type: string
+ *                success: 
+ *                  type: boolean
  *       '400':
  *         description: Verification failed or code is invalid
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
  */
 userRouter.route("/verifycode").post(verifyCode);
 

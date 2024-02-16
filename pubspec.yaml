@@ -81,6 +81,9 @@ flutter:
     - family: Poppins-Light
       fonts:
         - asset: fonts/Poppins-Light.ttf
+    - family: Poppins-Bold
+      fonts:
+        - asset: fonts/Poppins-Bold.ttf
   
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

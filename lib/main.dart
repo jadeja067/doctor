@@ -1,4 +1,6 @@
-import 'package:df/screens/Login.dart';
+import 'package:df/src/screens/login/login.dart';
+import 'package:df/src/screens/signup/signup.dart';
+// import 'package:df/src/screens/signup/signup.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -18,13 +20,9 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            scaffoldBackgroundColor: Colors.white
-          ),
-          routes: {
-            "/": (context) => const Login()
-          },
-        );
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(scaffoldBackgroundColor: Colors.white),
+      routes: {"/": (context) => SignUp(size: MediaQuery.of(context).size)},
+    );
   }
 }

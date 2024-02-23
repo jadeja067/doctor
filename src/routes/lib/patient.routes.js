@@ -135,6 +135,8 @@ patientRouter.post("/new", verifyJwt, createNewPatient);
  *         description: Unauthorized request
  *       '404':
  *         description: Patient not found
+ * 
+ * 
  */
 patientRouter.patch("/update/:id", verifyJwt, updatePatient);
 

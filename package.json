@@ -6,7 +6,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "test": "try"
+    "test": "try",
+    "debug": "ndb src/index.js"
   },
   "author": "",
   "license": "ISC",

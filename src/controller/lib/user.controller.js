@@ -36,6 +36,9 @@ const signUpUser = asyncHandler(async (req, res) => {
 });
 
 const createProfile = asyncHandler(async (req, res) => {
+  const checkVerification = await Code.find({ uId: req.user._id });
+  console.log(checkVerification);
+  if (checkVerification.length > 0) throw new ApiError(400, "verify your code.");
   const { sAvatar, sFirstName, sLastName, sWhatsAppBussinessNumber } = req.body;
   if (
     [sAvatar, sFirstName, sLastName, sWhatsAppBussinessNumber].some(
@@ -44,6 +47,7 @@ const createProfile = asyncHandler(async (req, res) => {
   )
     throw new ApiError(400, "All fields are required.");
   const avatarPath = req.file?.path;
+  
   const avatar = await uploadToCLoudinary(avatarPath);
   if (!avatar) throw new ApiError(400, "Avatar file required.");
   const data = await User.findByIdAndUpdate(
@@ -82,7 +86,7 @@ const logIn = asyncHandler(async (req, res) => {
 });
 
 const verifyCode = asyncHandler(async (req, res) => {
-  const code = parseInt(req.body?.nCode);
+  const code = req.body?.nCode
   const isVerifiedUser = await Code.findOne({ nCode: code });
   if (!isVerifiedUser) throw new ApiError(400, "Invalid Code.");
   const checkingCodeExpiration = await expireCode({

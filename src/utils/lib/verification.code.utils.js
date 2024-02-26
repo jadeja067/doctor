@@ -2,7 +2,7 @@ import otpGenerator from "otp-generator";
 import { Code } from "../../models/index.js";
 import { send } from "../index.js";
 
-const otpExpirationTime = 60 * 1000;
+const otpExpirationTime = 10 * 60 * 1000;
 
 const generateNewCode = () =>
   otpGenerator.generate(6, {

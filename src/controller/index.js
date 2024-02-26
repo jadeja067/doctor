@@ -1,4 +1,9 @@
-import { signUpUser, logIn, verifyCode } from "./lib/user.controller.js";
+import {
+  signUpUser,
+  logIn,
+  verifyCode,
+  createProfile,
+} from "./lib/user.controller.js";
 import {
   createNewPatient,
   getAllPatients,
@@ -10,6 +15,7 @@ export {
   signUpUser,
   logIn,
   verifyCode,
+  createProfile,
   createNewPatient,
   getAllPatients,
   getPatient,

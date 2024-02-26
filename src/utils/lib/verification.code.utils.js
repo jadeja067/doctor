@@ -1,8 +1,8 @@
 import otpGenerator from "otp-generator";
-import { User } from "../../models/index.js";
-import {send} from "../index.js";
+import { Code } from "../../models/index.js";
+import { send } from "../index.js";
 
-const otpExpirationTime = 15 * 1000;
+const otpExpirationTime = 60 * 1000;
 
 const generateNewCode = () =>
   otpGenerator.generate(6, {
@@ -12,44 +12,28 @@ const generateNewCode = () =>
     specialChars: false,
   });
 
-const sendCodeViaMail = async (sEmail) => {
-    const code = generateNewCode();
-    await User.findOneAndUpdate(
-      { sEmail },
-      {
-        oCode: {
-          nCode: code,
-          nCreatedAt: Date.now(),
-        },
-      },
-      { new: true }
-    );
-    send(sEmail, code);
-    return code;
+const sendCodeViaMail = async (sEmail, uId) => {
+  const code = generateNewCode();
+  await Code.create({
+    nCode: code,
+    nCreatedAt: Date.now(),
+    uId
+  })
+  send(sEmail, code);
+  return code;
 };
 
-const removeCode = async (code) => {
-  await User.findOneAndUpdate(
-    { "oCode.nCode": code },
-    {
-      oCode: {
-        nCode: 0,
-        nCreatedAt: 0,
-      },
-    },
-    { new: true }
-  );
-};
+const removeCode = async (uId) => await Code.findOneAndDelete({ uId });
 
 const expireCode = async (data) => {
   if (Date.now() - data.createdAt > otpExpirationTime) {
-    await removeCode(data.code);
+    await removeCode(data.uId);
     return false;
   } else if (data.verified) {
-    await removeCode(data.code);
+    await removeCode(data.uId);
     return false;
   }
-  return true
+  return true;
 };
 
 export { generateNewCode, sendCodeViaMail, expireCode };

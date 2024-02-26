@@ -6,43 +6,57 @@ import {
   expireCode,
   sendCodeViaMail,
 } from "../../utils/index.js";
-import { User } from "../../models/index.js";
+import { User, Code } from "../../models/index.js";
 
 const signUpUser = asyncHandler(async (req, res) => {
-  const {
-    sFirstName,
-    sLastName,
+  const { sEmail, sPassword } = req.body;
+  if (!sEmail || !sPassword) throw new ApiError(400, "Invalid Input.");
+  const user = await User.findOne({ sEmail });
+  if (user) throw new ApiError(400, "User already exist.");
+  const createNewUser = new User({
     sEmail,
-    sMobileNumber,
-    sWhatsAppBussinessNumber,
     sPassword,
-  } = req.body;
-  const check = await User.findOne({ sEmail });
-  if (check) throw new ApiError(400, "User Already Exist.");
+  });
+  let newUser = await createNewUser.save({ validateBeforeSave: false });
+  if (!newUser) throw new ApiError(400, "can't create your account.");
+  await sendCodeViaMail(sEmail, newUser._id);
+  newUser = await User.findById({ _id: newUser._id }).select(
+    "-sPassword -__v -updatedAt"
+  );
+  const AccessToken = await newUser.generateAccessToken();
+  res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        AccessToken,
+      },
+      "Code is sent."
+    )
+  );
+});
+
+const createProfile = asyncHandler(async (req, res) => {
+  const { sAvatar, sFirstName, sLastName, sWhatsAppBussinessNumber } = req.body;
   if (
-    [
-      sFirstName,
-      sLastName,
-      sEmail,
-      sMobileNumber,
-      sWhatsAppBussinessNumber,
-      sPassword,
-    ].some((field) => field?.trim === "")
+    [sAvatar, sFirstName, sLastName, sWhatsAppBussinessNumber].some(
+      (field) => field?.trim === ""
+    )
   )
     throw new ApiError(400, "All fields are required.");
   const avatarPath = req.file?.path;
   const avatar = await uploadToCLoudinary(avatarPath);
   if (!avatar) throw new ApiError(400, "Avatar file required.");
-  const data = await User.create({
-    sFirstName,
-    sLastName,
-    sEmail,
-    sMobileNumber,
-    sAvatar: avatar.url,
-    sWhatsAppBussinessNumber,
-    sPassword,
-  });
-  if(!data) throw new ApiError(500, "couldn't create your account")
+  const data = await User.findByIdAndUpdate(
+    { _id: req.user._id },
+    {
+      sFirstName,
+      sLastName,
+      sAvatar: avatar.url,
+      sWhatsAppBussinessNumber,
+    },
+    { new: true }
+  );
+  if (!data) throw new ApiError(500, "couldn't create your account");
   res
     .status(201)
     .json(new ApiResponse(201, data, "Your Account is successfully created."));
@@ -50,39 +64,44 @@ const signUpUser = asyncHandler(async (req, res) => {
 
 const logIn = asyncHandler(async (req, res) => {
   const { sEmail, sPassword } = req.body;
-  if (!sEmail && !sPassword) throw new ApiError(400, "Invalid Input.");
-  const user = await User.findOne({ sEmail: sEmail });
-  if (!user)
-    throw new ApiError(400, "User with this email doesn't exist.");
+  if (!sEmail || !sPassword) throw new ApiError(400, "Invalid Input.");
+  const user = await User.findOne({ sEmail });
+  if (!user) throw new ApiError(400, "User with this email doesn't exist.");
   const passwordVerification = await user.isPasswordCorrect(sPassword);
-  if (!passwordVerification)
-    throw new ApiError(400, "invalid password.");
-  const code = await sendCodeViaMail(sEmail);
-  res.status(200).json(new ApiResponse(200, { code }, "User already exist."));
+  if (!passwordVerification) throw new ApiError(400, "invalid password.");
+  const authToken = await user.generateAccessToken();
+  res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        AccessToken: authToken,
+      },
+      "User already exist."
+    )
+  );
 });
 
 const verifyCode = asyncHandler(async (req, res) => {
   const code = parseInt(req.body?.nCode);
-  const isVerifiedUser = await User.findOne({ "oCode.nCode": code }).select(
-    "-sPassword"
-  );
-    const checkingCodeExpiration = await expireCode({
+  const isVerifiedUser = await Code.findOne({ nCode: code });
+  if (!isVerifiedUser) throw new ApiError(400, "Invalid Code.");
+  const checkingCodeExpiration = await expireCode({
     code,
-    createdAt: isVerifiedUser?.oCode?.nCreatedAt,
+    createdAt: isVerifiedUser?.nCreatedAt,
+    uId: req.user._id,
   });
   if (checkingCodeExpiration) {
     await expireCode({
       code,
-      createdAt: isVerifiedUser?.oCode?.nCreatedAt,
+      createdAt: isVerifiedUser?.nCreatedAt,
+      uId: req.user._id,
       verified: true,
     });
-        const authToken = await isVerifiedUser.generateAccessToken();
     res.status(200).json(
       new ApiResponse(
         200,
         {
-          User: isVerifiedUser,
-          AccessToken: authToken,
+          verified: true,
         },
         "User successfully verified."
       )
@@ -90,4 +109,4 @@ const verifyCode = asyncHandler(async (req, res) => {
   } else throw new ApiError(400, "verification Failed");
 });
 
-export { signUpUser, logIn, verifyCode };
+export { signUpUser, logIn, verifyCode, createProfile };

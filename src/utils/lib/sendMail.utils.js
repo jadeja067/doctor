@@ -31,9 +31,7 @@ const send = (to, text) => {
   mailOptions.text = text;
 
   transporter.sendMail(mailOptions, function (error, info) {
-    console.log(error);
     if (error) new ApiError(400, error);
-    else console.log("Email is sent.");
   });
 };
 

@@ -50,22 +50,6 @@ const userSchema = new Schema(
       minlength: [8, "Password length must be atleast 8 character"],
       maxlength: [20, "Password length must not be greater than 20 character"],
     },
-    sMobileNumber: {
-      type: String,
-      minlength: [
-        13,
-        "Mobile number length should be greater than 12 character including + sign",
-      ],
-      maxlength: [
-        16,
-        "Mobile number length should be less than 17 character including + sign",
-      ],
-      required: [true, "Mobile number is required."],
-      match: [
-        /^\+(?:[0-9] ?){6,14}[0-9]$/,
-        "Please fill a valid mobile number with country code",
-      ],
-    },
     sWhatsAppBussinessNumber: {
       type: String,
       minlength: [
@@ -82,16 +66,6 @@ const userSchema = new Schema(
         "Please fill a valid mobile number with country code",
       ],
       required: [true, "WhatsApp bussiness Number is required."],
-    },
-    oCode: {
-      nCode: {
-        type: Number,
-        default: 0
-      },
-      nCreatedAt: {
-        type: Number,
-        default: 0
-      },
     },
   },
   {

@@ -19,7 +19,7 @@ const signUpUser = asyncHandler(async (req, res) => {
   });
   let newUser = await createNewUser.save({ validateBeforeSave: false });
   if (!newUser) throw new ApiError(400, "can't create your account.");
-  await sendCodeViaMail(sEmail, newUser._id);
+  const code = await sendCodeViaMail(sEmail, newUser._id);
   newUser = await User.findById({ _id: newUser._id }).select(
     "-sPassword -__v -updatedAt"
   );
@@ -29,11 +29,24 @@ const signUpUser = asyncHandler(async (req, res) => {
       200,
       {
         AccessToken,
+        code
       },
       "Code is sent."
     )
   );
 });
+
+const resendCode = asyncHandler(async (req, res) => {
+  const oldCodes = await Code.find({ uId: req.user._id })
+  if (oldCodes) {
+    await Code.deleteMany({uId: req.user._id})
+  }
+  const code = await sendCodeViaMail(req.user.sEmail, req.user._id);
+  res.json(new ApiResponse(200, {
+    message: "code is sent.",
+    code
+  }))
+})
 
 const createProfile = asyncHandler(async (req, res) => {
   const checkVerification = await Code.find({ uId: req.user._id });
@@ -59,7 +72,7 @@ const createProfile = asyncHandler(async (req, res) => {
       sWhatsAppBussinessNumber,
     },
     { new: true }
-  );
+  ).select("-sPassword -updatedAt -__v");
   if (!data) throw new ApiError(500, "couldn't create your account");
   res
     .status(201)
@@ -113,4 +126,4 @@ const verifyCode = asyncHandler(async (req, res) => {
   } else throw new ApiError(400, "verification Failed");
 });
 
-export { signUpUser, logIn, verifyCode, createProfile };
+export { signUpUser, logIn, verifyCode, createProfile, resendCode };

@@ -3,6 +3,7 @@ import {
   logIn,
   verifyCode,
   createProfile,
+  resendCode
 } from "./lib/user.controller.js";
 import {
   createNewPatient,
@@ -16,6 +17,7 @@ export {
   logIn,
   verifyCode,
   createProfile,
+  resendCode,
   createNewPatient,
   getAllPatients,
   getPatient,

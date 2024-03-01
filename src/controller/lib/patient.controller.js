@@ -90,16 +90,7 @@ const updatePatient = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All fields are required.");
   const updatedPatient = await Patient.findOneAndUpdate(
     { _id },
-    {
-      sName,
-      sType,
-      sAssessment,
-      sAddress,
-      sAddress2,
-      sWhatsAppNumber,
-      sGender,
-      nAge,
-    },
+    req.body,
     {
       new: true,
     }

@@ -119,6 +119,7 @@ const verifyCode = asyncHandler(async (req, res) => {
         200,
         {
           verified: true,
+          sEmail: req.user.sEmail
         },
         "User successfully verified."
       )

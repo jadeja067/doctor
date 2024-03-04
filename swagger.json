@@ -281,7 +281,7 @@
           "content": {
             "application/json": {
               "example": {
-                "sEmail": "user@gamil.com",
+                "sEmail": "user@gmail.com",
                 "sPassword": "password"
               }
             }
@@ -339,7 +339,7 @@
           "content": {
             "application/json": {
               "example": {
-                "sEmail": "user@gamil.com",
+                "sEmail": "user@gmail.com",
                 "sPassword": "password"
               }
             }

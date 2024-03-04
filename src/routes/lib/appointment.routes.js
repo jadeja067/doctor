@@ -15,7 +15,7 @@ appointmentRouter.post("/add/:id", verifyJwt, createNewAppointment)
 appointmentRouter.get("/get/all", verifyJwt, getAllAppointments);
 appointmentRouter.get("/get/:id", verifyJwt, getAppointment);
 appointmentRouter.get("/get/patient/:id", verifyJwt, getPatientAllAppointments);
-appointmentRouter.get("/delete/:id", verifyJwt, deleteAppointment);
+appointmentRouter.delete("/delete/:id", verifyJwt, deleteAppointment);
 appointmentRouter.post("/add/payment/:id", verifyJwt, AddPaymentShedule);
 
 

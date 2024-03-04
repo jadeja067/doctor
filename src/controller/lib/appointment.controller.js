@@ -3,6 +3,7 @@ import { ApiError, ApiResponse, asyncHandler } from "../../utils/index.js";
 
 const createNewAppointment = asyncHandler(async (req, res) => {
   const pId = req.params?.id;
+  const uId = req.user._id
   if (!pId) throw new ApiError(400, "Provide patient id.");
   const newAppointment = await Appointment.create({
     pId,
@@ -22,14 +23,14 @@ const createNewAppointment = asyncHandler(async (req, res) => {
 });
 
 const getAllAppointments = asyncHandler(async (req, res) => {
-  const uId = req.body?._id
+  const uId = req.user._id
   const appointment = await Appointment.find({ uId })
   res.status(200).json(new ApiResponse(200, appointment))
 })
 
 const getPatientAllAppointments = asyncHandler(async (req, res) => {
   const pId = req.params?.id
-  if (!_id) throw new ApiError(400, "Provide patient id.");
+  if (!pId) throw new ApiError(400, "Provide patient id.");
   const appointment = await Appointment.find({ pId });
   res.status(200).json(new ApiResponse(200, appointment));
 })
@@ -62,7 +63,8 @@ const deleteAppointment = asyncHandler(async (req, res) => {
   const _id = req.params?.id;
   if (!_id) throw new ApiError(400, "Provide appointment id.");
   const deletedAppointment = await Appointment.deleteOne({ _id });
-  res.status(200).json(new ApiResponse(200, deletedAppointment));
+  await PaymentShcedule.deleteMany({ apponintmentId: deletedAppointment._id})
+  res.status(200).json(new ApiResponse(200, "Appointment is deleted successfully."));
 })
 
 export {

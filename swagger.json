@@ -897,7 +897,7 @@
     },
     "/appointment/add/{id}": {
       "post": {
-        "summary": "Add appointments",
+        "summary": "Add appointments for patient",
         "description": "This is the api for adding a patient's appointments",
         "tags": ["Appointment"],
         "security": [
@@ -909,7 +909,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "Appointment ID",
+            "description": "Patient ID",
             "required": true,
             "schema": {
               "type": "string",
@@ -946,6 +946,7 @@
                   "statusCode": 201,
                   "data": {
                     "pId": "52lkjlakdfj020lkdf20",
+                    "uId": "52lkjladdfj020lk3f47",
                     "sToTreat": "2024-03-01T11:49:00.948Z",
                     "dFromDate": "2024-03-01T11:49:00.948Z",
                     "dToDate": "2024-03-01T11:49:00.948Z",
@@ -956,7 +957,9 @@
                       "nEvery": "3",
                       "sRepeatDuration": ["m", "t", "f"]
                     },
-                    "sNote": "important note"
+                    "sNote": "important note",
+                    "createdAt": "2024-03-01T11:49:00.948Z",
+                    "updatedAt":"2024-03-01T11:49:00.948Z"
                   },
                   "message": "Appointment is successfully fetched",
                   "success": true
@@ -1036,27 +1039,6 @@
             "bearerAuth": []
           }
         ],
-
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "example": {
-                "sToTreat": "Home Visit",
-                "dFromDate": "2024-03-01T11:49:00.948Z",
-                "dToDate": "2024-03-01T11:49:00.948Z",
-                "dtFromTime": "2024-03-01T11:49:00.948Z",
-                "dtToTime": "2024-03-01T11:49:00.948Z",
-                "oRepeat": {
-                  "sFrequency": "Weekly",
-                  "nEvery": "3",
-                  "sRepeatDuration": ["m", "t", "f"]
-                },
-                "sNote": "important note"
-              }
-            }
-          }
-        },
         "responses": {
           "201": {
             "description": "Created",
@@ -1075,7 +1057,10 @@
                       "nEvery": "3",
                       "sRepeatDuration": ["m", "t", "f"]
                     },
-                    "sNote": "important note"
+                    "sNote": "important note",
+                    "createdAt": "2024-03-04T11:20:10.147Z",
+                    "updatedAt": "2024-03-04T11:20:10.147Z",
+                    "__v": 0
                   },
                   "message": "Appointment is successfully fetched",
                   "success": true
@@ -1112,26 +1097,6 @@
             }
           }
         ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "example": {
-                "sToTreat": "Home Visit",
-                "dFromDate": "2024-03-01T11:49:00.948Z",
-                "dToDate": "2024-03-01T11:49:00.948Z",
-                "dtFromTime": "2024-03-01T11:49:00.948Z",
-                "dtToTime": "2024-03-01T11:49:00.948Z",
-                "oRepeat": {
-                  "sFrequency": "Weekly",
-                  "nEvery": "3",
-                  "sRepeatDuration": ["m", "t", "f"]
-                },
-                "sNote": "important note"
-              }
-            }
-          }
-        },
         "responses": {
           "201": {
             "description": "Created",
@@ -1150,7 +1115,10 @@
                       "nEvery": "3",
                       "sRepeatDuration": ["m", "t", "f"]
                     },
-                    "sNote": "important note"
+                    "sNote": "important note",
+                    "createdAt": "2024-03-04T11:20:10.147Z",
+                    "updatedAt": "2024-03-04T11:20:10.147Z",
+                    "__v": 0
                   },
                   "message": "Appointment is successfully fetched",
                   "success": true
@@ -1187,26 +1155,6 @@
             }
           }
         ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "example": {
-                "sToTreat": "Home Visit",
-                "dFromDate": "2024-03-01T11:49:00.948Z",
-                "dToDate": "2024-03-01T11:49:00.948Z",
-                "dtFromTime": "2024-03-01T11:49:00.948Z",
-                "dtToTime": "2024-03-01T11:49:00.948Z",
-                "oRepeat": {
-                  "sFrequency": "Weekly",
-                  "nEvery": "3",
-                  "sRepeatDuration": ["m", "t", "f"]
-                },
-                "sNote": "important note"
-              }
-            }
-          }
-        },
         "responses": {
           "201": {
             "description": "Created",
@@ -1225,7 +1173,10 @@
                       "nEvery": "3",
                       "sRepeatDuration": ["m", "t", "f"]
                     },
-                    "sNote": "important note"
+                    "sNote": "important note",
+                    "createdAt": "2024-03-04T11:20:10.147Z",
+                    "updatedAt": "2024-03-04T11:20:10.147Z",
+                    "__v": 0
                   },
                   "message": "Appointment is successfully updated",
                   "success": true

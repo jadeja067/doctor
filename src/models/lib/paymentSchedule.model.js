@@ -5,14 +5,15 @@ const PaymentShceduleShema = new Schema({
     type: Number,
     require: [true, "Charges is required."],
   },
-  nEvery: {
+  sRepayment: {
     type: String,
     default: "Daily",
     enum: ["Daily", "Weekly", "Monthly"],
     require: [true, "Charges is required."],
   },
-  sRepeatDuration: {
-    type: [String],
+  apponintmentId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Appointment",
   },
 });
 

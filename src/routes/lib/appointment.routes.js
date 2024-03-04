@@ -1,14 +1,14 @@
 import { Router } from "express";
 import {
-  createNewPatient,
-  getAllPatients,
-  getPatient,
-  updatePatient,
-  deletePatient
+  createNewAppointment,
+  AddPaymentShedule
 } from "../../controller/index.js";
 import { verifyJwt } from "../../middlewares/index.js";
 
 const appointmentRouter = Router();
+
+appointmentRouter.post("/add/:id", verifyJwt, createNewAppointment)
+appointmentRouter.post("/payment/:id", verifyJwt, AddPaymentShedule)
 
 
 export default appointmentRouter;

@@ -3,16 +3,19 @@ import {
   logIn,
   verifyCode,
   createProfile,
-  resendCode
+  resendCode,
 } from "./lib/user.controller.js";
 import {
   createNewPatient,
   getAllPatients,
   getPatient,
   updatePatient,
-  deletePatient
+  deletePatient,
 } from "./lib/patient.controller.js";
-
+import {
+  createNewAppointment,
+  AddPaymentShedule,
+} from "./lib/appointment.controller.js";
 export {
   signUpUser,
   logIn,
@@ -24,4 +27,6 @@ export {
   getPatient,
   updatePatient,
   deletePatient,
+  createNewAppointment,
+  AddPaymentShedule
 };

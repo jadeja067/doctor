@@ -1,8 +1,11 @@
 import express from "express";
 import cors from "cors";
-import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
-import { userRouter, patientRouter } from "./routes/index.js";
+import {
+  userRouter,
+  patientRouter,
+  appointmentRouter,
+} from "./routes/index.js";
 import swagger from "../swagger.json" assert { type: "json" };
 
 
@@ -37,6 +40,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swagger));
 // Rotues
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/patients", patientRouter);
+app.use("/api/v1/appointment", appointmentRouter);
 
 // exporting App
 export default app;

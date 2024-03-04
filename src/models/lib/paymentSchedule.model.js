@@ -14,6 +14,7 @@ const PaymentShceduleShema = new Schema({
   apponintmentId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Appointment",
+    require:[true, "Appointment id is required."]
   },
 });
 

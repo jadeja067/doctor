@@ -235,7 +235,7 @@
         },
         "required": ["nCode", "nCreatedAt"]
       },
-      "Payment":{
+      "Payment": {
         "type": "object",
         "properties": {
           "nCharges": {
@@ -708,8 +708,15 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Patient"
+              "example": {
+                "sName": "Joe Doe",
+                "sType": "diabetic",
+                "sAssessment": "Highly diabetic patient",
+                "sAddress": "123 St high street",
+                "sAddress2": "near globe circle, Petesburg",
+                "sWhatsAppNumber": "+911234567890",
+                "sGender": "male",
+                "nAge": 20
               }
             }
           }
@@ -784,8 +791,7 @@
                 "sAddress2": "near globe circle, Petesburg",
                 "sWhatsAppNumber": "+911234567890",
                 "sGender": "male",
-                "nAge": 21,
-                "_id": "56lkldkf23434lkd3d"
+                "nAge": 21
               }
             }
           }
@@ -855,7 +861,7 @@
           "content": {
             "application/json": {
               "example": {
-                "sToTreat": "2024-03-01T11:49:00.948Z",
+                "sToTreat": "Home Visit",
                 "dFromDate": "2024-03-01T11:49:00.948Z",
                 "dToDate": "2024-03-01T11:49:00.948Z",
                 "dtFromTime": "2024-03-01T11:49:00.948Z",

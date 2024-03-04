@@ -28,8 +28,7 @@ const signUpUser = asyncHandler(async (req, res) => {
     new ApiResponse(
       200,
       {
-        AccessToken,
-        code
+        AccessToken
       },
       "Code is sent."
     )
@@ -43,14 +42,12 @@ const resendCode = asyncHandler(async (req, res) => {
   }
   const code = await sendCodeViaMail(req.user.sEmail, req.user._id);
   res.json(new ApiResponse(200, {
-    message: "code is sent.",
-    code
+    message: "code is sent."
   }))
 })
 
 const createProfile = asyncHandler(async (req, res) => {
   const checkVerification = await Code.find({ uId: req.user._id });
-  console.log(checkVerification);
   if (checkVerification.length > 0) throw new ApiError(400, "verify your code.");
   const { sAvatar, sFirstName, sLastName, sWhatsAppBussinessNumber } = req.body;
   if (

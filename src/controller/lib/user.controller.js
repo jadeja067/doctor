@@ -86,6 +86,9 @@ const logIn = asyncHandler(async (req, res) => {
   if (!user) throw new ApiError(400, "User with this email doesn't exist.");
   const passwordVerification = await user.isPasswordCorrect(sPassword);
   if (!passwordVerification) throw new ApiError(400, "invalid password.");
+  if (!user.sFirstName && !user.sLastName) {
+    throw new ApiError(400, "Complete the singup first.")
+  }
   const authToken = await user.generateAccessToken();
   res.status(200).json(
     new ApiResponse(

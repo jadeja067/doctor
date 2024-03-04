@@ -10,6 +10,7 @@ import {
   getAllPatients,
   getPatient,
   updatePatient,
+  deletePatient
 } from "./lib/patient.controller.js";
 
 export {
@@ -21,5 +22,6 @@ export {
   createNewPatient,
   getAllPatients,
   getPatient,
-  updatePatient
+  updatePatient,
+  deletePatient,
 };

@@ -10,7 +10,7 @@ import { upload, verifyJwt } from "../../middlewares/index.js";
 
 const userRouter = Router();
 
-userRouter.route("/signin").post(logIn);
+userRouter.route("/login").post(logIn);
 
 userRouter.route("/signup").post(signUpUser);
 

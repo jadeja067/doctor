@@ -15,7 +15,7 @@ const createNewPatient = asyncHandler(async (req, res) => {
   const uId = req.user?._id;
   const check = await Patient.findOne({
     sName,
-    sWhatsAppNumber
+    sWhatsAppNumber,
   });
   if (check) throw new ApiError(400, "User Already Exist.");
   if (
@@ -63,38 +63,28 @@ const getPatient = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, patient));
 });
 
+const deletePatient = asyncHandler(async (req, res) => {
+  const _id = req.params?.id;
+  if (!_id) throw new ApiError(400, "Provide patient id.");
+  const deletedPatient = await Patient.deleteOne({ _id }).select("-__v");
+  if (!deletedPatient) {
+    throw new ApiError(400, "this patient does not exist.");
+  }
+  res
+    .status(200)
+    .json(
+      new ApiResponse(200, "Patient is deleted successfully.")
+    );
+});
+
 const updatePatient = asyncHandler(async (req, res) => {
   const _id = req.params?.id;
-  const {
-    sName,
-    sType,
-    sAssessment,
-    sAddress,
-    sAddress2,
-    sWhatsAppNumber,
-    sGender,
-    nAge,
-  } = req.body;
-  if (
-    [
-      sName,
-      sType,
-      sAssessment,
-      sAddress,
-      sAddress2,
-      sWhatsAppNumber,
-      sGender,
-      nAge,
-    ].some((field) => field?.trim === "")
-  )
-    throw new ApiError(400, "All fields are required.");
-  const updatedPatient = await Patient.findOneAndUpdate(
-    { _id },
-    req.body,
-    {
-      new: true,
-    }
-  );
+  if (!_id) throw new ApiError(400, "Provide patient id.");
+  console.log(_id);
+  const updatedPatient = await Patient.findOneAndUpdate({ _id }, req.body, {
+    new: true,
+  });
+  console.log(updatedPatient);
   if (!updatedPatient) throw new ApiError(400, "Can't update patient details.");
   res
     .status(200)
@@ -107,4 +97,10 @@ const updatePatient = asyncHandler(async (req, res) => {
     );
 });
 
-export { createNewPatient, getAllPatients, getPatient, updatePatient };
+export {
+  createNewPatient,
+  getAllPatients,
+  getPatient,
+  updatePatient,
+  deletePatient,
+};

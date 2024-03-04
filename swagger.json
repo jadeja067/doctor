@@ -475,7 +475,7 @@
     },
     "/users/createprofile": {
       "post": {
-        "summary": "User to create profile",
+        "summary": "Create profile",
         "description": "A user will create his/her profile",
         "tags": ["User"],
         "security": [
@@ -745,7 +745,7 @@
                       "__v": 0
                     }
                   ],
-                  "message": "Patient is successfully added",
+                  "message": "Appointment is successfully added",
                   "success": true
                 }
               }
@@ -771,7 +771,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "Patient ID",
+            "description": "Appointment ID",
             "required": true,
             "schema": {
               "type": "string",
@@ -834,6 +834,67 @@
         }
       }
     },
+    "/patients/delete/{id}": {
+      "delete": {
+        "summary": "Delete patient by ID",
+        "description": "Update patient details by its ID.",
+        "tags": ["Patient"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Appointment ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "sName": "Joe Doe",
+                "sType": "diabetic",
+                "sAssessment": "medium diabetic",
+                "sAddress": "123 St high street",
+                "sAddress2": "near globe circle, Petesburg",
+                "sWhatsAppNumber": "+911234567890",
+                "sGender": "male",
+                "nAge": 21
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 201,
+                  "message": "Patient is deleted successfully",
+                  "success": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
     "/appointment/add/{id}": {
       "post": {
         "summary": "Add appointments",
@@ -848,7 +909,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "Patient ID",
+            "description": "Appointment ID",
             "required": true,
             "schema": {
               "type": "string",
@@ -867,7 +928,7 @@
                 "dtFromTime": "2024-03-01T11:49:00.948Z",
                 "dtToTime": "2024-03-01T11:49:00.948Z",
                 "oRepeat": {
-                  "sFrequency": "weekly",
+                  "sFrequency": "Weekly",
                   "nEvery": "3",
                   "sRepeatDuration": ["m", "t", "f"]
                 },
@@ -891,13 +952,13 @@
                     "dtFromTime": "2024-03-01T11:49:00.948Z",
                     "dtToTime": "2024-03-01T11:49:00.948Z",
                     "oRepeat": {
-                      "sFrequency": "weekly",
+                      "sFrequency": "Weekly",
                       "nEvery": "3",
                       "sRepeatDuration": ["m", "t", "f"]
                     },
                     "sNote": "important note"
                   },
-                  "message": "Patient is successfully added",
+                  "message": "Appointment is successfully fetched",
                   "success": true
                 }
               }
@@ -954,6 +1015,281 @@
                     "sRepayment": "Weekly"
                   },
                   "message": "Patient is successfully added",
+                  "success": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/appointment/get/all": {
+      "get": {
+        "summary": "Fetch user's all appointments",
+        "description": "This is the api for fetching user's appointments",
+        "tags": ["Appointment"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "sToTreat": "Home Visit",
+                "dFromDate": "2024-03-01T11:49:00.948Z",
+                "dToDate": "2024-03-01T11:49:00.948Z",
+                "dtFromTime": "2024-03-01T11:49:00.948Z",
+                "dtToTime": "2024-03-01T11:49:00.948Z",
+                "oRepeat": {
+                  "sFrequency": "Weekly",
+                  "nEvery": "3",
+                  "sRepeatDuration": ["m", "t", "f"]
+                },
+                "sNote": "important note"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 201,
+                  "data": {
+                    "sToTreat": "Home Visit",
+                    "dFromDate": "2024-03-01T11:49:00.948Z",
+                    "dToDate": "2024-03-01T11:49:00.948Z",
+                    "dtFromTime": "2024-03-01T11:49:00.948Z",
+                    "dtToTime": "2024-03-01T11:49:00.948Z",
+                    "oRepeat": {
+                      "sFrequency": "Weekly",
+                      "nEvery": "3",
+                      "sRepeatDuration": ["m", "t", "f"]
+                    },
+                    "sNote": "important note"
+                  },
+                  "message": "Appointment is successfully fetched",
+                  "success": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/appointment/get/{id}": {
+      "get": {
+        "summary": "Fetch a  single appointment",
+        "description": "This is the api for fetching appointment",
+        "tags": ["Appointment"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Appointment ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "sToTreat": "Home Visit",
+                "dFromDate": "2024-03-01T11:49:00.948Z",
+                "dToDate": "2024-03-01T11:49:00.948Z",
+                "dtFromTime": "2024-03-01T11:49:00.948Z",
+                "dtToTime": "2024-03-01T11:49:00.948Z",
+                "oRepeat": {
+                  "sFrequency": "Weekly",
+                  "nEvery": "3",
+                  "sRepeatDuration": ["m", "t", "f"]
+                },
+                "sNote": "important note"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 201,
+                  "data": {
+                    "sToTreat": "Home Visit",
+                    "dFromDate": "2024-03-01T11:49:00.948Z",
+                    "dToDate": "2024-03-01T11:49:00.948Z",
+                    "dtFromTime": "2024-03-01T11:49:00.948Z",
+                    "dtToTime": "2024-03-01T11:49:00.948Z",
+                    "oRepeat": {
+                      "sFrequency": "Weekly",
+                      "nEvery": "3",
+                      "sRepeatDuration": ["m", "t", "f"]
+                    },
+                    "sNote": "important note"
+                  },
+                  "message": "Appointment is successfully fetched",
+                  "success": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/appointment/get/patient/{id}": {
+      "get": {
+        "summary": "Fetch patient's all appointments",
+        "description": "This is the api for fetching a patient's all appointments",
+        "tags": ["Appointment"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Patient ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "sToTreat": "Home Visit",
+                "dFromDate": "2024-03-01T11:49:00.948Z",
+                "dToDate": "2024-03-01T11:49:00.948Z",
+                "dtFromTime": "2024-03-01T11:49:00.948Z",
+                "dtToTime": "2024-03-01T11:49:00.948Z",
+                "oRepeat": {
+                  "sFrequency": "Weekly",
+                  "nEvery": "3",
+                  "sRepeatDuration": ["m", "t", "f"]
+                },
+                "sNote": "important note"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 200,
+                  "data": {
+                    "sToTreat": "Home Visit",
+                    "dFromDate": "2024-03-01T11:49:00.948Z",
+                    "dToDate": "2024-03-01T11:49:00.948Z",
+                    "dtFromTime": "2024-03-01T11:49:00.948Z",
+                    "dtToTime": "2024-03-01T11:49:00.948Z",
+                    "oRepeat": {
+                      "sFrequency": "Weekly",
+                      "nEvery": "3",
+                      "sRepeatDuration": ["m", "t", "f"]
+                    },
+                    "sNote": "important note"
+                  },
+                  "message": "Appointment is successfully updated",
+                  "success": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/appointment/delete/{id}": {
+      "delete": {
+        "summary": "Delete appointment",
+        "description": "This is the api for deleting appointment",
+        "tags": ["Appointment"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Appointment ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "sToTreat": "Home Visit",
+                "dFromDate": "2024-03-01T11:49:00.948Z",
+                "dToDate": "2024-03-01T11:49:00.948Z",
+                "dtFromTime": "2024-03-01T11:49:00.948Z",
+                "dtToTime": "2024-03-01T11:49:00.948Z",
+                "oRepeat": {
+                  "sFrequency": "Weekly",
+                  "nEvery": "3",
+                  "sRepeatDuration": ["m", "t", "f"]
+                },
+                "sNote": "important note"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 200,
+                  "message": "Appointment is successfully deleted.",
                   "success": true
                 }
               }

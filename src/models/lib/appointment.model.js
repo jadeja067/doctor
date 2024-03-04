@@ -20,7 +20,11 @@ const appointmentSchema = new Schema(
   {
     pId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Patient"
+      ref: "Patient",
+    },
+    uId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
     sToTreat: {
       type: String,
@@ -50,10 +54,10 @@ const appointmentSchema = new Schema(
       required: [true, "Appointment end time is required."],
     },
     oRepeat: repeatSchema,
-    sNote:{
-        type: String,
-        trim: true,
-    }
+    sNote: {
+      type: String,
+      trim: true,
+    },
   },
   {
     timestamps: true,

@@ -6,6 +6,7 @@ const createNewAppointment = asyncHandler(async (req, res) => {
   if (!pId) throw new ApiError(400, "Provide patient id.");
   const newAppointment = await Appointment.create({
     pId,
+    uId,
     sToTreat: req.body?.sToTreat,
     dToDate: req.body?.dToDate,
     dFromDate: req.body?.dFromDate,
@@ -18,6 +19,26 @@ const createNewAppointment = asyncHandler(async (req, res) => {
   res
     .status(200)
     .json(new ApiResponse(200, newAppointment, "appointment is created."));
+});
+
+const getAllAppointments = asyncHandler(async (req, res) => {
+  const uId = req.body?._id
+  const appointment = await Appointment.find({ uId })
+  res.status(200).json(new ApiResponse(200, appointment))
+})
+
+const getPatientAllAppointments = asyncHandler(async (req, res) => {
+  const pId = req.params?.id
+  if (!_id) throw new ApiError(400, "Provide patient id.");
+  const appointment = await Appointment.find({ pId });
+  res.status(200).json(new ApiResponse(200, appointment));
+})
+
+const getAppointment = asyncHandler(async (req, res) => {
+  const _id = req.params?.id;
+  if(!_id) throw new ApiError(400, "Provide appointment id.")
+  const appointment = await Appointment.findOne({ _id });
+  res.status(200).json(new ApiResponse(200, appointment));
 });
 
 const AddPaymentShedule = asyncHandler(async (req, res) => {
@@ -37,4 +58,18 @@ const AddPaymentShedule = asyncHandler(async (req, res) => {
       );
 });
 
-export { createNewAppointment, AddPaymentShedule };
+const deleteAppointment = asyncHandler(async (req, res) => {
+  const _id = req.params?.id;
+  if (!_id) throw new ApiError(400, "Provide appointment id.");
+  const deletedAppointment = await Appointment.deleteOne({ _id });
+  res.status(200).json(new ApiResponse(200, deletedAppointment));
+})
+
+export {
+  createNewAppointment,
+  AddPaymentShedule,
+  getAllAppointments,
+  getAppointment,
+  getPatientAllAppointments,
+  deleteAppointment,
+};

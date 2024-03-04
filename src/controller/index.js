@@ -15,6 +15,10 @@ import {
 import {
   createNewAppointment,
   AddPaymentShedule,
+  getAllAppointments,
+  getAppointment,
+  getPatientAllAppointments,
+  deleteAppointment,
 } from "./lib/appointment.controller.js";
 export {
   signUpUser,
@@ -28,5 +32,9 @@ export {
   updatePatient,
   deletePatient,
   createNewAppointment,
-  AddPaymentShedule
+  AddPaymentShedule,
+  getAllAppointments,
+  getAppointment,
+  getPatientAllAppointments,
+  deleteAppointment,
 };

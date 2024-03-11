@@ -4,6 +4,9 @@ import {
   verifyCode,
   createProfile,
   resendCode,
+  deleteUser,
+  blockUser,
+  unBlockUser
 } from "./lib/user.controller.js";
 import {
   createNewPatient,
@@ -20,6 +23,7 @@ import {
   getPatientAllAppointments,
   deleteAppointment,
 } from "./lib/appointment.controller.js";
+import { adminLogIn, updateAdminDetails, getAllUsers } from "./lib/admin.controller.js";
 export {
   signUpUser,
   logIn,
@@ -37,4 +41,10 @@ export {
   getAppointment,
   getPatientAllAppointments,
   deleteAppointment,
+  adminLogIn,
+  updateAdminDetails,
+  deleteUser,
+  blockUser,
+  unBlockUser,
+  getAllUsers
 };

@@ -5,14 +5,12 @@ import {
   userRouter,
   patientRouter,
   appointmentRouter,
+  adminRouter,
 } from "./routes/index.js";
 import swagger from "../swagger.json" assert { type: "json" };
 
-
-
 // App
 const app = express();
-
 
 // Middlewares
 app.use(
@@ -41,6 +39,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swagger));
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/patients", patientRouter);
 app.use("/api/v1/appointment", appointmentRouter);
+app.use("/api/v1/admin", adminRouter);
 
 // exporting App
 export default app;

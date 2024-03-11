@@ -1,20 +1,31 @@
 import mongoose, { Schema } from "mongoose";
 
 const repeatSchema = new Schema({
-    sFrequency: {
-        type: String,
-        require: [true, "Appointment repeat frequency is required."],
-        enum: ["Never", "Daily", "Weekly", "Monthly", "Yearly"],
-        default: "Never"
-    },
-    nEvery:{
-        type: Number,
-        min: [1, "Appointment Every duration shouldn't be less than 1."]
-    },
-    sRepeatDuration:{
-        type: [String]
-    }
-})
+  sFrequency: {
+    type: String,
+    require: [true, "Appointment repeat frequency is required."],
+    enum: [
+      "Never",
+      "Daily",
+      "Weekly",
+      "Monthly",
+      "Yearly",
+      "never",
+      "daily",
+      "weekly",
+      "monthly",
+      "yearly",
+    ],
+    default: "Never",
+  },
+  nEvery: {
+    type: Number,
+    min: [1, "Appointment Every duration shouldn't be less than 1."],
+  },
+  sRepeatDuration: {
+    type: [String],
+  },
+});
 
 const appointmentSchema = new Schema(
   {

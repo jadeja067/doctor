@@ -1,5 +1,5 @@
 import { asyncHandler, ApiError, ApiResponse } from "../../utils/index.js";
-import { Patient } from "../../models/index.js";
+import { Appointment, Patient } from "../../models/index.js";
 
 const createNewPatient = asyncHandler(async (req, res) => {
   const {
@@ -70,11 +70,10 @@ const deletePatient = asyncHandler(async (req, res) => {
   if (!deletedPatient) {
     throw new ApiError(400, "this patient does not exist.");
   }
+  await Appointment.deleteMany({ pId: _id });
   res
     .status(200)
-    .json(
-      new ApiResponse(200, "Patient is deleted successfully.")
-    );
+    .json(new ApiResponse(200, "Patient is deleted successfully."));
 });
 
 const updatePatient = asyncHandler(async (req, res) => {
@@ -84,7 +83,6 @@ const updatePatient = asyncHandler(async (req, res) => {
   const updatedPatient = await Patient.findOneAndUpdate({ _id }, req.body, {
     new: true,
   });
-  console.log(updatedPatient);
   if (!updatedPatient) throw new ApiError(400, "Can't update patient details.");
   res
     .status(200)

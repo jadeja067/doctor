@@ -14,11 +14,15 @@ const generateNewCode = () =>
 
 const sendCodeViaMail = async (sEmail, uId) => {
   const code = generateNewCode();
+  const alreadyExist = await Code.find({ uId });
+  if (!alreadyExist) {
+    await Code.deleteMany({ uId });
+  }
   await Code.create({
     nCode: code,
     nCreatedAt: Date.now(),
-    uId
-  })
+    uId,
+  });
   send(sEmail, code);
   return code;
 };

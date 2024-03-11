@@ -50,6 +50,10 @@ const userSchema = new Schema(
       minlength: [8, "Password length must be atleast 8 character"],
       maxlength: [20, "Password length must not be greater than 20 character"],
     },
+    bIsBlocked: {
+      type: Boolean,
+      default: false
+    },
     sWhatsAppBussinessNumber: {
       type: String,
       minlength: [
@@ -82,6 +86,7 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.isPasswordCorrect = async function (password) {
   return await bcryptjs.compare(password, this.sPassword);
 };
+
 userSchema.methods.generateAccessToken = function () {
   return jwt.sign(
     {
@@ -90,18 +95,7 @@ userSchema.methods.generateAccessToken = function () {
     },
     process.env.JWT_SECRET_KEY,
     {
-      expiresIn: "10d",
-    }
-  );
-};
-userSchema.methods.generateRefreshToken = function () {
-  return jwt.sign(
-    {
-      _id: this._id,
-    },
-    process.env.JWT_SECRET_KEY,
-    {
-      expiresIn: "10d",
+      expiresIn: process.env.JWT_EXPIRE_TIME,
     }
   );
 };

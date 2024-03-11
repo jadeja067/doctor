@@ -8,15 +8,17 @@ const PaymentShceduleShema = new Schema({
   sRepayment: {
     type: String,
     default: "Daily",
-    enum: ["Daily", "Weekly", "Monthly"],
+    enum: ["Daily", "Weekly", "Monthly", "daily", "weekly", "monthly"],
     require: [true, "Charges is required."],
   },
   apponintmentId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Appointment",
-    require:[true, "Appointment id is required."]
+    require: [true, "Appointment id is required."],
   },
 });
 
-
-export const PaymentShcedule = mongoose.model("PaymentShcedule", PaymentShceduleShema);
+export const PaymentShcedule = mongoose.model(
+  "PaymentShcedule",
+  PaymentShceduleShema
+);

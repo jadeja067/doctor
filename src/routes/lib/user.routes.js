@@ -5,6 +5,9 @@ import {
   verifyCode,
   createProfile,
   resendCode,
+  deleteUser,
+  blockUser,
+  unBlockUser,
 } from "../../controller/index.js";
 import { upload, verifyJwt } from "../../middlewares/index.js";
 
@@ -16,8 +19,13 @@ userRouter.route("/signup").post(signUpUser);
 
 userRouter.route("/verifycode").post(verifyJwt, verifyCode);
 
-userRouter.route("/resend").post(verifyJwt, resendCode);
+userRouter.route("/resend").get(verifyJwt, resendCode);
 
+userRouter.route("/delete/:id").delete(verifyJwt, deleteUser);
+
+userRouter.route("/block/:id").post(verifyJwt, blockUser);
+
+userRouter.route("/unblock/:id").post(verifyJwt, unBlockUser);
 
 userRouter
   .route("/createprofile")

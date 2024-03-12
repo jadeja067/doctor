@@ -445,7 +445,7 @@
       }
     },
     "/users/resend": {
-      "post": {
+      "get": {
         "summary": "Resend code",
         "description": "User to verify the code sent to email",
         "tags": ["User"],

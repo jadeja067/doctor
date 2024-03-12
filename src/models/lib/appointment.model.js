@@ -69,6 +69,10 @@ const appointmentSchema = new Schema(
       type: String,
       trim: true,
     },
+    isComplete:{
+      type:Boolean,
+      default:false
+    }
   },
   {
     timestamps: true,

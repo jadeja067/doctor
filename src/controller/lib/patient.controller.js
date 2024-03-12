@@ -17,7 +17,7 @@ const createNewPatient = asyncHandler(async (req, res) => {
     sName,
     sWhatsAppNumber,
   });
-  if (check) throw new ApiError(400, "User Already Exist.");
+  if (check) throw new ApiError(400, "Patient Already Exist.");
   if (
     [
       sName,
@@ -52,7 +52,7 @@ const getAllPatients = asyncHandler(async (req, res) => {
   const uId = req.user?._id;
   const patients = await Patient.find({ uId });
   if (patients.length <= 0)
-    throw new ApiError(500, "No patient for this user.");
+    throw new ApiError(400, "No patient for this user.");
   res.status(200).json(new ApiResponse(200, patients));
 });
 
@@ -67,19 +67,18 @@ const deletePatient = asyncHandler(async (req, res) => {
   const _id = req.params?.id;
   if (!_id) throw new ApiError(400, "Provide patient id.");
   const deletedPatient = await Patient.deleteOne({ _id }).select("-__v");
-  if (!deletedPatient) {
-    throw new ApiError(400, "this patient does not exist.");
+  if (!deletedPatient?.deletedCount) {
+    throw new ApiError(404, "Patient not found");
   }
   await Appointment.deleteMany({ pId: _id });
   res
     .status(200)
-    .json(new ApiResponse(200, "Patient is deleted successfully."));
+    .json(new ApiResponse(200,[], "Patient is deleted successfully."));
 });
 
 const updatePatient = asyncHandler(async (req, res) => {
   const _id = req.params?.id;
   if (!_id) throw new ApiError(400, "Provide patient id.");
-  console.log(_id);
   const updatedPatient = await Patient.findOneAndUpdate({ _id }, req.body, {
     new: true,
   });

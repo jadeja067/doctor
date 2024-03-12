@@ -9,6 +9,10 @@
     {
       "url": "https://doctor-592v.onrender.com/api/v1",
       "description": "Development Server"
+    },
+    {
+      "url": "http://localhost:4000/api/v1",
+      "description": "localhost server"
     }
   ],
   "components": {
@@ -626,7 +630,7 @@
                 "example": {
                   "Account not created": {
                     "value": {
-                      "messsage": "Your account could not be created either due to internal error or you have not entered some details."
+                      "message": "Your account could not be created either due to internal error or you have not entered some details."
                     }
                   }
                 }
@@ -682,23 +686,22 @@
             }
           },
           "400": {
-            "description": "Provide valid id",
+            "description": "Bad Request",
             "content": {
               "application/json": {
-                "example": {
-                  "success": false,
-                  "message": "Cast to ObjectId failed for value \"1234lj\" (type string) at path \"_id\" for model \"Patient\""
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "No patient for this user",
-            "content": {
-              "application/json": {
-                "example": {
-                  "success": false,
-                  "message": "No patient for this user."
+                "examples": {
+                  "Unauthorized Request": {
+                    "value": {
+                      "success": false,
+                      "message": "Unauthorized request"
+                    }
+                  },
+                  "No patient for this user": {
+                    "value": {
+                      "success": false,
+                      "message": "No patient for this user."
+                    }
+                  }
                 }
               }
             }
@@ -761,7 +764,25 @@
             }
           },
           "404": {
-            "description": "Not Found"
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Not Found": {
+                    "value": {
+                      "success": false,
+                      "message": "Patient for this user not found"
+                    }
+                  },
+                  "Unauthorized Request": {
+                    "value": {
+                      "success": false,
+                      "message": "Unauthorized request"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -841,6 +862,12 @@
                       "success": false,
                       "message": "Patient validation failed: sName, sWhatsAppNumber is required"
                     }
+                  },
+                  "Patient already exists": {
+                    "value": {
+                      "success": false,
+                      "message": "Patient already exists"
+                    }
                   }
                 }
               }
@@ -896,7 +923,7 @@
             "content": {
               "application/json": {
                 "example": {
-                  "statusCode": 201,
+                  "statusCode": 200,
                   "data": [
                     {
                       "sName": "Joe Doe",
@@ -920,10 +947,25 @@
             }
           },
           "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Provide valid id": {
+                    "value": {
+                      "success": false,
+                      "message": "Please provide valid id"
+                    }
+                  },
+                  "Can't update patient details": {
+                    "value": {
+                      "success": false,
+                      "message": "Can't update patient details"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -952,30 +994,14 @@
             }
           }
         ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "example": {
-                "sName": "Joe Doe",
-                "sType": "diabetic",
-                "sAssessment": "medium diabetic",
-                "sAddress": "123 St high street",
-                "sAddress2": "near globe circle, Petesburg",
-                "sWhatsAppNumber": "+911234567890",
-                "sGender": "male",
-                "nAge": 21
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "example": {
-                  "statusCode": 201,
+                  "statusCode": 200,
+                  "data": [],
                   "message": "Patient is deleted successfully",
                   "success": true
                 }
@@ -983,10 +1009,26 @@
             }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "message": "Provide valid id"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found"
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "message": "Patient not found"
+                }
+              }
+            }
           }
         }
       }
@@ -1074,7 +1116,52 @@
             }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Provide valid id": {
+                    "value": {
+                      "success": false,
+                      "message": "Provide valid id"
+                    }
+                  },
+                  "Patient does not exist": {
+                    "value": {
+                      "success": false,
+                      "message": "Patient does not exist"
+                    }
+                  },
+                  "Appointment already exists":{
+                    "value":{
+                      "success":false,
+                      "message":"Can't create appointment because one already exists" 
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Can't create appointment",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Appointment creation error": {
+                    "value": {
+                      "success": false,
+                      "message": "Can't create appointment"
+                    }
+                  },
+                  "Appointment validation failed":{
+                    "value":{
+                      "success":false,
+                      "message":"Appointment validation failed"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -1150,12 +1237,12 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created",
+          "200": {
+            "description": "All appointments",
             "content": {
               "application/json": {
                 "example": {
-                  "statusCode": 201,
+                  "statusCode": 200,
                   "data": {
                     "sToTreat": "Home Visit",
                     "dFromDate": "2024-03-01T11:49:00.948Z",
@@ -1183,7 +1270,25 @@
             }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Unauthorized Request": {
+                    "value": {
+                      "success": false,
+                      "message": "Unauthorized request"
+                    }
+                  },
+                  "No appointment": {
+                    "value": {
+                      "success": false,
+                      "message": "No appointment found."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -1213,12 +1318,12 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created",
+          "200": {
+            "description": "Single Appointment",
             "content": {
               "application/json": {
                 "example": {
-                  "statusCode": 201,
+                  "statusCode": 200,
                   "data": {
                     "sToTreat": "Home Visit",
                     "dFromDate": "2024-03-01T11:49:00.948Z",
@@ -1246,7 +1351,25 @@
             }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Unauthorized Request": {
+                    "value": {
+                      "success": false,
+                      "message": "Unauthorized request"
+                    }
+                  },
+                  "No appointment for this patient": {
+                    "value": {
+                      "success": false,
+                      "message": "No appointment for this patient."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }

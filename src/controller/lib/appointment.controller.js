@@ -1,10 +1,22 @@
-import { Appointment, PaymentShcedule } from "../../models/index.js";
+import { Appointment, Patient, PaymentShcedule } from "../../models/index.js";
 import { ApiError, ApiResponse, asyncHandler } from "../../utils/index.js";
 
 const createNewAppointment = asyncHandler(async (req, res) => {
   const pId = req.params?.id;
   const uId = req.user._id;
   if (!pId) throw new ApiError(400, "Provide patient id.");
+  const existingPatient = await Patient.findOne({_id:pId})
+  if(!existingPatient){
+    throw new ApiError(400,"Patient does not exist")
+  }
+  const isExistingAppointment = await Appointment.find({isComplete:false})
+  const today = new Date();
+  const thisDay = today.toISOString().split("T")[0];
+  const existingDate= isExistingAppointment[isExistingAppointment.length-1]?.createdAt.toISOString().split("T")[0]
+
+  
+  if(thisDay === existingDate)
+  throw new ApiError(400,"Cannot create appointment because one already exists for today");
   const newAppointment = await Appointment.create({
     pId,
     uId,
@@ -17,9 +29,10 @@ const createNewAppointment = asyncHandler(async (req, res) => {
     sNote: req.body?.sNote,
   });
   if (!newAppointment) throw new ApiError(500, "can't create new appointment.");
+
   res
-    .status(200)
-    .json(new ApiResponse(200, newAppointment, "appointment is created."));
+    .status(201)
+    .json(new ApiResponse(201, newAppointment, "appointment is created."));
 });
 
 const getAllAppointments = asyncHandler(async (req, res) => {

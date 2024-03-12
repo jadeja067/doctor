@@ -9,7 +9,7 @@ import {
   blockUser,
   unBlockUser,
 } from "../../controller/index.js";
-import { upload, verifyJwt } from "../../middlewares/index.js";
+import { handleCastError, upload, verifyJwt } from "../../middlewares/index.js";
 
 const userRouter = Router();
 
@@ -21,11 +21,11 @@ userRouter.route("/verifycode").post(verifyJwt, verifyCode);
 
 userRouter.route("/resend").get(verifyJwt, resendCode);
 
-userRouter.route("/delete/:id").delete(verifyJwt, deleteUser);
+userRouter.route("/delete/:id").delete(verifyJwt,handleCastError, deleteUser);
 
-userRouter.route("/block/:id").post(verifyJwt, blockUser);
+userRouter.route("/block/:id").post(verifyJwt,handleCastError, blockUser);
 
-userRouter.route("/unblock/:id").post(verifyJwt, unBlockUser);
+userRouter.route("/unblock/:id").post(verifyJwt,handleCastError, unBlockUser);
 
 userRouter
   .route("/createprofile")

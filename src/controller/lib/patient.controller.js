@@ -52,7 +52,7 @@ const getAllPatients = asyncHandler(async (req, res) => {
   const uId = req.user?._id;
   const patients = await Patient.find({ uId });
   if (patients.length <= 0)
-    throw new ApiError(200, "No patient for this user.");
+    throw new ApiError(500, "No patient for this user.");
   res.status(200).json(new ApiResponse(200, patients));
 });
 

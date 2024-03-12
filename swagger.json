@@ -107,7 +107,11 @@
           "sGender": {
             "type": "string",
             "description": "Patient's gender",
-            "enum": ["male", "female", "others"],
+            "enum": [
+              "male",
+              "female",
+              "others"
+            ],
             "minLength": 3,
             "example": "male"
           },
@@ -147,7 +151,10 @@
           "sToTreat": {
             "type": "string",
             "description": "Treatment place",
-            "enum": ["Home Visit", "Clinic"],
+            "enum": [
+              "Home Visit",
+              "Clinic"
+            ],
             "default": "Home Visit"
           },
           "dFromDate": {
@@ -181,7 +188,13 @@
               "sFrequency": {
                 "type": "string",
                 "description": "Appointment repeat frequency",
-                "enum": ["Never", "Daily", "Weekly", "Monthly", "Yearly"],
+                "enum": [
+                  "Never",
+                  "Daily",
+                  "Weekly",
+                  "Monthly",
+                  "Yearly"
+                ],
                 "default": "Never"
               },
               "nEvery": {
@@ -197,7 +210,9 @@
                 }
               }
             },
-            "required": ["sFrequency"]
+            "required": [
+              "sFrequency"
+            ]
           },
           "sNote": {
             "type": "string",
@@ -233,7 +248,10 @@
             "format": "uuid"
           }
         },
-        "required": ["nCode", "nCreatedAt"]
+        "required": [
+          "nCode",
+          "nCreatedAt"
+        ]
       },
       "Payment": {
         "type": "object",
@@ -247,7 +265,11 @@
             "type": "string",
             "description": "Repayment schedule",
             "default": "Daily",
-            "enum": ["Daily", "Weekly", "Monthly"]
+            "enum": [
+              "Daily",
+              "Weekly",
+              "Monthly"
+            ]
           },
           "apponintmentId": {
             "type": "string",
@@ -255,7 +277,11 @@
             "format": "objectID"
           }
         },
-        "required": ["nCharges", "sRepayment", "apponintmentId"]
+        "required": [
+          "nCharges",
+          "sRepayment",
+          "apponintmentId"
+        ]
       }
     },
     "securitySchemes": {
@@ -276,7 +302,9 @@
       "post": {
         "summary": "User sign up",
         "description": "A user will create an account",
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -334,7 +362,9 @@
       "post": {
         "summary": "Log in",
         "description": "A person can log in his account",
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -355,6 +385,7 @@
                   "data": {
                     "accessToken": "flskdjfljojlkjdj"
                   },
+                  "message": "success",
                   "success": true
                 }
               }
@@ -391,7 +422,9 @@
       "post": {
         "summary": "Verify code",
         "description": "User to verify the code sent to email",
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -448,7 +481,9 @@
       "get": {
         "summary": "Resend code",
         "description": "User to verify the code sent to email",
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -469,6 +504,17 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "message": "Unauthorized request"
+                }
+              }
+            }
           }
         }
       }
@@ -477,7 +523,9 @@
       "post": {
         "summary": "Create profile",
         "description": "A user will create his/her profile",
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -592,7 +640,9 @@
       "get": {
         "summary": "Get all patients",
         "description": "To retrieve the list of patients for the current user",
-        "tags": ["Patient"],
+        "tags": [
+          "Patient"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -630,6 +680,28 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Provide valid id",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "message": "Cast to ObjectId failed for value \"1234lj\" (type string) at path \"_id\" for model \"Patient\""
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "No patient for this user",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "message": "No patient for this user."
+                }
+              }
+            }
           }
         }
       }
@@ -638,8 +710,9 @@
       "get": {
         "summary": "Get patient by ID",
         "description": "Retrieve patient details by its ID.",
-        "tags": ["Patient"],
-
+        "tags": [
+          "Patient"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -693,12 +766,13 @@
         }
       }
     },
-    "/patients/new": {
+    "/patients/add": {
       "post": {
         "summary": "Create a new patient",
         "description": "Create a new patient record for the authenticated user.",
-        "tags": ["Patient"],
-
+        "tags": [
+          "Patient"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -752,7 +826,25 @@
             }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Unauthorized Request": {
+                    "value": {
+                      "success": false,
+                      "message": "Unauthorized request"
+                    }
+                  },
+                  "Patient validation failed": {
+                    "value": {
+                      "success": false,
+                      "message": "Patient validation failed: sName, sWhatsAppNumber is required"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -761,7 +853,9 @@
       "patch": {
         "summary": "Update patient by ID",
         "description": "Update patient details by its ID.",
-        "tags": ["Patient"],
+        "tags": [
+          "Patient"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -838,7 +932,9 @@
       "delete": {
         "summary": "Delete patient by ID",
         "description": "Update patient details by its ID.",
-        "tags": ["Patient"],
+        "tags": [
+          "Patient"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -899,7 +995,9 @@
       "post": {
         "summary": "Add appointments for patient",
         "description": "This is the api for adding a patient's appointments",
-        "tags": ["Appointment"],
+        "tags": [
+          "Appointment"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -930,7 +1028,11 @@
                 "oRepeat": {
                   "sFrequency": "Weekly",
                   "nEvery": "3",
-                  "sRepeatDuration": ["m", "t", "f"]
+                  "sRepeatDuration": [
+                    "m",
+                    "t",
+                    "f"
+                  ]
                 },
                 "sNote": "important note"
               }
@@ -955,11 +1057,15 @@
                     "oRepeat": {
                       "sFrequency": "Weekly",
                       "nEvery": "3",
-                      "sRepeatDuration": ["m", "t", "f"]
+                      "sRepeatDuration": [
+                        "m",
+                        "t",
+                        "f"
+                      ]
                     },
                     "sNote": "important note",
                     "createdAt": "2024-03-01T11:49:00.948Z",
-                    "updatedAt":"2024-03-01T11:49:00.948Z"
+                    "updatedAt": "2024-03-01T11:49:00.948Z"
                   },
                   "message": "Appointment is successfully fetched",
                   "success": true
@@ -977,7 +1083,9 @@
       "post": {
         "summary": "Add payment for appointments",
         "description": "This is the api for adding a patient's appointments payment",
-        "tags": ["Appointment"],
+        "tags": [
+          "Appointment"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1033,7 +1141,9 @@
       "get": {
         "summary": "Fetch user's all appointments",
         "description": "This is the api for fetching user's appointments",
-        "tags": ["Appointment"],
+        "tags": [
+          "Appointment"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1055,7 +1165,11 @@
                     "oRepeat": {
                       "sFrequency": "Weekly",
                       "nEvery": "3",
-                      "sRepeatDuration": ["m", "t", "f"]
+                      "sRepeatDuration": [
+                        "m",
+                        "t",
+                        "f"
+                      ]
                     },
                     "sNote": "important note",
                     "createdAt": "2024-03-04T11:20:10.147Z",
@@ -1078,13 +1192,14 @@
       "get": {
         "summary": "Fetch a  single appointment",
         "description": "This is the api for fetching appointment",
-        "tags": ["Appointment"],
+        "tags": [
+          "Appointment"
+        ],
         "security": [
           {
             "bearerAuth": []
           }
         ],
-
         "parameters": [
           {
             "name": "id",
@@ -1113,7 +1228,11 @@
                     "oRepeat": {
                       "sFrequency": "Weekly",
                       "nEvery": "3",
-                      "sRepeatDuration": ["m", "t", "f"]
+                      "sRepeatDuration": [
+                        "m",
+                        "t",
+                        "f"
+                      ]
                     },
                     "sNote": "important note",
                     "createdAt": "2024-03-04T11:20:10.147Z",
@@ -1136,13 +1255,14 @@
       "get": {
         "summary": "Fetch patient's all appointments",
         "description": "This is the api for fetching a patient's all appointments",
-        "tags": ["Appointment"],
+        "tags": [
+          "Appointment"
+        ],
         "security": [
           {
             "bearerAuth": []
           }
         ],
-
         "parameters": [
           {
             "name": "id",
@@ -1171,7 +1291,11 @@
                     "oRepeat": {
                       "sFrequency": "Weekly",
                       "nEvery": "3",
-                      "sRepeatDuration": ["m", "t", "f"]
+                      "sRepeatDuration": [
+                        "m",
+                        "t",
+                        "f"
+                      ]
                     },
                     "sNote": "important note",
                     "createdAt": "2024-03-04T11:20:10.147Z",
@@ -1194,13 +1318,14 @@
       "delete": {
         "summary": "Delete appointment",
         "description": "This is the api for deleting appointment",
-        "tags": ["Appointment"],
+        "tags": [
+          "Appointment"
+        ],
         "security": [
           {
             "bearerAuth": []
           }
         ],
-
         "parameters": [
           {
             "name": "id",
@@ -1226,7 +1351,11 @@
                 "oRepeat": {
                   "sFrequency": "Weekly",
                   "nEvery": "3",
-                  "sRepeatDuration": ["m", "t", "f"]
+                  "sRepeatDuration": [
+                    "m",
+                    "t",
+                    "f"
+                  ]
                 },
                 "sNote": "important note"
               }

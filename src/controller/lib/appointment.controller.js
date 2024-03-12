@@ -5,18 +5,24 @@ const createNewAppointment = asyncHandler(async (req, res) => {
   const pId = req.params?.id;
   const uId = req.user._id;
   if (!pId) throw new ApiError(400, "Provide patient id.");
-  const existingPatient = await Patient.findOne({_id:pId})
-  if(!existingPatient){
-    throw new ApiError(400,"Patient does not exist")
+  const existingPatient = await Patient.findOne({ _id: pId });
+  if (!existingPatient) {
+    throw new ApiError(400, "Patient does not exist");
   }
-  const isExistingAppointment = await Appointment.find({isComplete:false})
+  const isExistingAppointment = await Appointment.find({ isComplete: false });
   const today = new Date();
   const thisDay = today.toISOString().split("T")[0];
-  const existingDate= isExistingAppointment[isExistingAppointment.length-1]?.createdAt.toISOString().split("T")[0]
+  const existingDate = isExistingAppointment[
+    isExistingAppointment.length - 1
+  ]?.createdAt
+    .toISOString()
+    .split("T")[0];
 
-  
-  if(thisDay === existingDate)
-  throw new ApiError(400,"Cannot create appointment because one already exists for today");
+  if (thisDay === existingDate)
+    throw new ApiError(
+      400,
+      "Cannot create appointment because one already exists for today"
+    );
   const newAppointment = await Appointment.create({
     pId,
     uId,
@@ -64,10 +70,10 @@ const getAppointment = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, appointment));
 });
 
-const AddPaymentShedule = asyncHandler(async (req, res) => {
+const addPaymentShedule = asyncHandler(async (req, res) => {
   const apponintmentId = req.params?.id;
   if (!apponintmentId) throw new ApiError(400, "Provide patient id.");
-  const appointment = await Appointment.find({_id:apponintmentId})
+  const appointment = await Appointment.find({ _id: apponintmentId });
   if (!appointment) {
     throw new ApiError(400, "Appointment does not exist");
   }
@@ -89,6 +95,17 @@ const AddPaymentShedule = asyncHandler(async (req, res) => {
     );
 });
 
+const getPayments = asyncHandler(async (req, res) => {
+  const apponintmentId = req.params?.id;
+  if (!apponintmentId) throw new ApiError(400, "Provide patient id.");
+  const appointment = await Appointment.findOne({ _id: apponintmentId });
+  if (!appointment) throw new ApiError(400, "Appointment does not exist");
+  const paymentShcedule = await PaymentShcedule.findOne({ apponintmentId })
+  if (!paymentShcedule) throw new ApiError(400, "No payment shcedule is avalible for this appointment")
+  return res.status(200).json(new ApiResponse(200, paymentShcedule))
+});
+
+
 const deleteAppointment = asyncHandler(async (req, res) => {
   const _id = req.params?.id;
   if (!_id) throw new ApiError(400, "Provide appointment id.");
@@ -104,9 +121,10 @@ const deleteAppointment = asyncHandler(async (req, res) => {
 
 export {
   createNewAppointment,
-  AddPaymentShedule,
+  addPaymentShedule,
   getAllAppointments,
   getAppointment,
   getPatientAllAppointments,
   deleteAppointment,
+  getPayments,
 };

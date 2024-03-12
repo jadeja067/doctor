@@ -17,11 +17,12 @@ import {
 } from "./lib/patient.controller.js";
 import {
   createNewAppointment,
-  AddPaymentShedule,
+  addPaymentShedule,
   getAllAppointments,
   getAppointment,
   getPatientAllAppointments,
   deleteAppointment,
+  getPayments,
 } from "./lib/appointment.controller.js";
 import { adminLogIn, updateAdminDetails, getAllUsers } from "./lib/admin.controller.js";
 export {
@@ -36,7 +37,7 @@ export {
   updatePatient,
   deletePatient,
   createNewAppointment,
-  AddPaymentShedule,
+  addPaymentShedule,
   getAllAppointments,
   getAppointment,
   getPatientAllAppointments,
@@ -46,5 +47,6 @@ export {
   deleteUser,
   blockUser,
   unBlockUser,
-  getAllUsers
+  getAllUsers,
+  getPayments,
 };

@@ -140,8 +140,7 @@ const logIn = asyncHandler(async (req, res) => {
       200,
       {
         accessToken,
-      },
-      "User already exist."
+      }
     )
   );
 });

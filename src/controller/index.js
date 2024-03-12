@@ -23,6 +23,7 @@ import {
   getPatientAllAppointments,
   deleteAppointment,
   getPayments,
+  updateAppointment,
 } from "./lib/appointment.controller.js";
 import { adminLogIn, updateAdminDetails, getAllUsers } from "./lib/admin.controller.js";
 export {
@@ -49,4 +50,5 @@ export {
   unBlockUser,
   getAllUsers,
   getPayments,
+  updateAppointment,
 };

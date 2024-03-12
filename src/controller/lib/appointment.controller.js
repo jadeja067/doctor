@@ -50,6 +50,17 @@ const getAllAppointments = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, appointment));
 });
 
+const updateAppointment = asyncHandler(async (req, res) => {
+  const _id = req.params?.id;
+  if (!_id) throw new ApiError(400, "Provide patient id.");
+  const updatedAppointment = await Appointment.create({ _id}, req.body, {new: true});
+  if (!updatedAppointment)
+    throw new ApiError(500, "can't update appointment.");
+  res
+    .status(201)
+    .json(new ApiResponse(201, updatedAppointment, "appointment is created."));
+});
+
 const getPatientAllAppointments = asyncHandler(async (req, res) => {
   const pId = req.params?.id;
   if (!pId) throw new ApiError(400, "Provide patient id.");
@@ -100,11 +111,14 @@ const getPayments = asyncHandler(async (req, res) => {
   if (!apponintmentId) throw new ApiError(400, "Provide patient id.");
   const appointment = await Appointment.findOne({ _id: apponintmentId });
   if (!appointment) throw new ApiError(400, "Appointment does not exist");
-  const paymentShcedule = await PaymentShcedule.findOne({ apponintmentId })
-  if (!paymentShcedule) throw new ApiError(400, "No payment shcedule is avalible for this appointment")
-  return res.status(200).json(new ApiResponse(200, paymentShcedule))
+  const paymentShcedule = await PaymentShcedule.findOne({ apponintmentId });
+  if (!paymentShcedule)
+    throw new ApiError(
+      400,
+      "No payment shcedule is avalible for this appointment"
+    );
+  return res.status(200).json(new ApiResponse(200, paymentShcedule));
 });
-
 
 const deleteAppointment = asyncHandler(async (req, res) => {
   const _id = req.params?.id;
@@ -127,4 +141,5 @@ export {
   getPatientAllAppointments,
   deleteAppointment,
   getPayments,
+  updateAppointment,
 };

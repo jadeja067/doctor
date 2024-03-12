@@ -7,6 +7,7 @@ import {
   getPatientAllAppointments,
   deleteAppointment,
   getPayments,
+  updateAppointment,
 } from "../../controller/index.js";
 import { handleCastError, verifyJwt } from "../../middlewares/index.js";
 
@@ -39,5 +40,11 @@ appointmentRouter.post(
   addPaymentShedule
 );
 appointmentRouter.get("/get/payment/", verifyJwt, handleCastError, getPayments);
+appointmentRouter.patch(
+  "/update/:id",
+  verifyJwt,
+  handleCastError,
+  updateAppointment
+);
 
 export default appointmentRouter;

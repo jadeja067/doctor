@@ -962,6 +962,12 @@
                       "success": false,
                       "message": "Can't update patient details"
                     }
+                  },
+                  "Unauthorized Request": {
+                    "value": {
+                      "success": false,
+                      "message": "Unauthorized request"
+                    }
                   }
                 }
               }
@@ -1012,9 +1018,19 @@
             "description": "Bad Request",
             "content": {
               "application/json": {
-                "example": {
-                  "success": false,
-                  "message": "Provide valid id"
+                "examples": {
+                  "Provide valid id": {
+                    "value": {
+                      "success": false,
+                      "message": "Provide valid id"
+                    }
+                  },
+                  "Unauthorized Request":{
+                    "value":{
+                      "success":false,
+                      "message":"Unauthorized request"
+                    }
+                  }
                 }
               }
             }
@@ -1132,10 +1148,10 @@
                       "message": "Patient does not exist"
                     }
                   },
-                  "Appointment already exists":{
-                    "value":{
-                      "success":false,
-                      "message":"Can't create appointment because one already exists" 
+                  "Appointment already exists": {
+                    "value": {
+                      "success": false,
+                      "message": "Can't create appointment because one already exists"
                     }
                   }
                 }
@@ -1153,10 +1169,10 @@
                       "message": "Can't create appointment"
                     }
                   },
-                  "Appointment validation failed":{
-                    "value":{
-                      "success":false,
-                      "message":"Appointment validation failed"
+                  "Appointment validation failed": {
+                    "value": {
+                      "success": false,
+                      "message": "Appointment validation failed"
                     }
                   }
                 }
@@ -1361,6 +1377,13 @@
                       "message": "Unauthorized request"
                     }
                   },
+                  "Provide valid id":{
+                    "value":{
+                      "success":false,
+                      "message":"Please provide valid id"
+                    }
+
+                  },
                   "No appointment for this patient": {
                     "value": {
                       "success": false,
@@ -1399,8 +1422,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created",
+          "200": {
+            "description": "Patient's all appointment",
             "content": {
               "application/json": {
                 "example": {
@@ -1425,14 +1448,32 @@
                     "updatedAt": "2024-03-04T11:20:10.147Z",
                     "__v": 0
                   },
-                  "message": "Appointment is successfully updated",
+                  "message": "Appointment is successfully fetched",
                   "success": true
                 }
               }
             }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Unauthorized Request": {
+                    "value": {
+                      "success": false,
+                      "message": "Unauthorized request"
+                    }
+                  },
+                  "No appointment for this patient": {
+                    "value": {
+                      "success": false,
+                      "message": "No appointments for this patient."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -1461,33 +1502,9 @@
             }
           }
         ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "example": {
-                "sToTreat": "Home Visit",
-                "dFromDate": "2024-03-01T11:49:00.948Z",
-                "dToDate": "2024-03-01T11:49:00.948Z",
-                "dtFromTime": "2024-03-01T11:49:00.948Z",
-                "dtToTime": "2024-03-01T11:49:00.948Z",
-                "oRepeat": {
-                  "sFrequency": "Weekly",
-                  "nEvery": "3",
-                  "sRepeatDuration": [
-                    "m",
-                    "t",
-                    "f"
-                  ]
-                },
-                "sNote": "important note"
-              }
-            }
-          }
-        },
         "responses": {
-          "201": {
-            "description": "Created",
+          "200": {
+            "description": "Delete appointment",
             "content": {
               "application/json": {
                 "example": {
@@ -1499,7 +1516,26 @@
             }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "message": "Provide valid id"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "message": "Patient's appointment not found"
+                }
+              }
+            }
           }
         }
       }
